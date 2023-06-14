@@ -6,7 +6,8 @@ hide_streamlit_style = """
             <style>
             .css-1avcm0n.e13qjvis2 {visibility: ;}
             .css-erpbzb.e1ewe7hr3 {visibility: ;}
-            .css-q16mip ejj6ze0 {visibility: hidden;}
+            .css-q16mip.ejj6ze0 {visibility: hidden;}
+            .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
             #MainMenu {visibility: ;}
             .viewerBadge_link__1S137 {visibility: hidden;}
             .viewerBadge_container__1QSob {visibility: hidden;}
