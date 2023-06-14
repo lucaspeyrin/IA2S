@@ -3,14 +3,19 @@ import pandas as pd
 import numpy as np
 from streamlit.components.v1 import html
 
+hide_text_style = """
+<style>
+.viewerBadge_text__1JaDK {
+    display: none !important;
+}
+</style>
+"""
+
+st.markdown(hide_text_style, unsafe_allow_html=True)
+
 
 hide_streamlit_style = """
 <style>
-
-.viewerBadge_container__1QSob {
-    display: none !important;
-}
-
 .css-1avcm0n.e13qjvis2 {visibility: hidden;}
 .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
 .css-q16mip.ejj6ze0 {visibility: hidden;}
