@@ -10,6 +10,7 @@ import numpy as np
 
 hide_streamlit_style = """
             <style>
+            .block-container.css-1y4p8pa.e1g8pov64 {visibility: hidden;}
             .css-1avcm0n.e13qjvis2 {visibility: hidden;}
             .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
             #MainMenu {visibility: hidden;}
