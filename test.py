@@ -14,7 +14,7 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-st.markdown(hide_streamlit_style, unsafe_allow_html=False) 
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 def afficher_taches(taches):
     for tache in taches:
