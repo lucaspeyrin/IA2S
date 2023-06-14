@@ -3,31 +3,29 @@ import pandas as pd
 import numpy as np
 from streamlit.components.v1 import html
 
-# Définir le code CSS pour masquer l'élément
-custom_css = """
+
+hide_streamlit_style = """
 <style>
+.viewerBadge_link__1S137 {
+    display: none !important;
+}
+
 .viewerBadge_text__1JaDK {
     display: none !important;
 }
+
+.css-1avcm0n.e13qjvis2 {visibility: hidden;}
+.css-erpbzb.e1ewe7hr3 {visibility: hidden;}
+.css-q16mip.ejj6ze0 {visibility: hidden;}
+.css-erpbzb.e1ewe7hr3 {visibility: hidden;}
+.stActionButton {visibility: hidden;}
+.css-14xtw13.e13qjvis0 {visibility: hidden;}
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
 </style>
 """
 
-# Injecter le code CSS dans Streamlit
-html(custom_css)
-
-hide_streamlit_style = """
-            <style>
-            .css-1avcm0n.e13qjvis2 {visibility: ;}
-            .css-erpbzb.e1ewe7hr3 {visibility: ;}
-            .css-q16mip.ejj6ze0 {visibility: hidden;}
-            .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
-            .stActionButton {visibility: hidden;}
-            .css-14xtw13.e13qjvis0 {visibility: hidden;}
-            #MainMenu {visibility: ;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 def afficher_taches(taches):
     for tache in taches:
