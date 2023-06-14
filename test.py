@@ -4,19 +4,16 @@ import numpy as np
 from streamlit.components.v1 import html
 
 # Définir le code CSS pour masquer l'élément
-custom_js = """
-<script>
-window.onload = function() {
-    var element = document.querySelector('.viewerBadge_link__1S137');
-    if (element) {
-        element.style.display = 'none';
-    }
+custom_css = """
+<style>
+.viewerBadge_text__1JaDK {
+    display: none !important;
 }
-</script>
+</style>
 """
 
 # Injecter le code CSS dans Streamlit
-html(custom_js)
+html(custom_css)
 
 hide_streamlit_style = """
             <style>
