@@ -3,15 +3,16 @@ import pandas as pd
 import numpy as np
 from streamlit.components.v1 import html
 
-hide_text_style = """
+hide_div_style = """
 <style>
-.viewerBadge_text__1JaDK {
+.viewerBadge_link__1S137 {
     display: none !important;
 }
 </style>
 """
 
-st.markdown(hide_text_style, unsafe_allow_html=True)
+st.markdown(hide_div_style, unsafe_allow_html=True)
+
 
 
 hide_streamlit_style = """
