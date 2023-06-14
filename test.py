@@ -10,8 +10,8 @@ import numpy as np
 
 hide_streamlit_style = """
             <style>
-            css-erpbzb e1ewe7hr3 {visibility: hidden;}
-            viewerBadge_link__1S137 {visibility: hidden;}
+            .css-erpbzb e1ewe7hr3 {visibility: hidden;}
+            .viewerBadge_link__1S137 {visibility: hidden;}
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
