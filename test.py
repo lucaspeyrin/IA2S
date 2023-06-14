@@ -11,6 +11,7 @@ hide_streamlit_style = """
             .stActionButton {visibility: hidden;}
             .css-14xtw13.e13qjvis0 {visibility: hidden;}
             #MainMenu {visibility: ;}
+            .styles_stateContainer__29Rp6 {visibility: hidden;}
             .viewerBadge_link__1S137 {visibility: hidden;}
             .viewerBadge_container__1QSob {visibility: hidden;}
             .styles_viewerBadge__1yB5_ {visibility: hidden;}
