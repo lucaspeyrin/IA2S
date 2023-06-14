@@ -16,7 +16,7 @@ hide_streamlit_style = """
             .viewerBadge_link__1S137 {visibility: hidden; !important;}
             .viewerBadge_container__1QSob {visibility: hidden; !important;}
             .styles_viewerBadge__1yB5_ {visibility: hidden; !important;}
-            footer {visibility: hidden;}
+            footer
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
