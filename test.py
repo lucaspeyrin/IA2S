@@ -1,21 +1,16 @@
-"""
-# My first app
-Here's our first attempt at using data to create a table:
-"""
-
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 
 hide_streamlit_style = """
             <style>
-            .css-1avcm0n.e13qjvis2 {visibility: hidden;}
-            .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
-            #MainMenu {visibility: hidden;}
-            div.viewerBadge_link__1S137 {visibility: hidden !important;}
-            div.viewerBadge_container__1QSob {visibility: hidden !important;}
-            div.styles_viewerBadge__1yB5_ {visibility: hidden !important;}
+            .css-1avcm0n.e13qjvis2 {visibility: ;}
+            .css-erpbzb.e1ewe7hr3 {visibility: ;}
+            .css-q16mip ejj6ze0 {visibility: hidden;}
+            #MainMenu {visibility: ;}
+            .viewerBadge_link__1S137 {visibility: hidden;}
+            .viewerBadge_container__1QSob {visibility: hidden;}
+            .styles_viewerBadge__1yB5_ {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
             """
