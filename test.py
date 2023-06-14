@@ -12,7 +12,7 @@ hide_streamlit_style = """
             <style>
             .css-1avcm0n.e13qjvis2 {visibility: hidden;}
             .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
-            a.viewerBadge_link__1S137 {display: none;}
+            div.viewerBadge_link__1S137 {display: none;}
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
