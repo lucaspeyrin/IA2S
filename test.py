@@ -10,7 +10,6 @@ hide_streamlit_style = """
             .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
             .stActionButton {visibility: hidden;}
             .css-14xtw13.e13qjvis0 {visibility: hidden;}
-            .css-1y4p8pa.e1g8pov64 {visibility: hidden;}
             #MainMenu {visibility: ;}
             .viewerBadge_link__1S137 {visibility: hidden;}
             .viewerBadge_container__1QSob {visibility: hidden;}
