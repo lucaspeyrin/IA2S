@@ -6,11 +6,8 @@ from streamlit.components.v1 import html
 
 hide_streamlit_style = """
 <style>
-.viewerBadge_link__1S137 {
-    display: none !important;
-}
 
-.viewerBadge_text__1JaDK {
+.viewerBadge_container__1QSob {
     display: none !important;
 }
 
