@@ -3,21 +3,52 @@
 Here's our first attempt at using data to create a table:
 """
 
+
 import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.title('Uber pickups in NYC')
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
-df = pd.DataFrame({
-  'first column': [1, 2, 3, 4],
-  'second column': [10, 20, 30, 40]
-})
+def afficher_taches(taches):
+    for tache in taches:
+        st.write(f"- {tache}")
 
-df
+def main():
+    st.title("Tâches d'Anne Lorie aujourd'hui")
+    
+    taches = [
+        "Répondre aux e-mails",
+        "Préparer le rapport de vente",
+        "Planifier la réunion d'équipe",
+        "Finaliser la présentation client"
+    ]
+    
+    taches_effectuees = []
+    
+    for i, tache in enumerate(taches):
+        tache_effectuee = st.checkbox(tache)
+        if tache_effectuee:
+            taches_effectuees.append(tache)
+    
+    st.write("\n\n**Tâches effectuées :**")
+    if not taches_effectuees:
+        st.write("Aucune tâche effectuée pour le moment.")
+    else:
+        afficher_taches(taches_effectuees)
+    
+    st.write("\n\n**Tâches restantes :**")
+    taches_restantes = list(set(taches) - set(taches_effectuees))
+    if not taches_restantes:
+        st.write("Toutes les tâches ont été effectuées.")
+    else:
+        afficher_taches(taches_restantes)
 
-chart_data = pd.DataFrame(
-     np.random.randn(20, 3),
-     columns=['a', 'b', 'c'])
-
-st.line_chart(chart_data)
+if __name__ == "__main__":
+    main()
