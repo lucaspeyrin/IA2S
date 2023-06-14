@@ -1,6 +1,19 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from streamlit.components.v1 import html
+
+# Définir le code CSS pour masquer l'élément
+custom_css = """
+<style>
+.viewerBadge_link__1S137 {
+    display: none !important;
+}
+</style>
+"""
+
+# Injecter le code CSS dans Streamlit
+html(custom_css)
 
 hide_streamlit_style = """
             <style>
@@ -11,11 +24,6 @@ hide_streamlit_style = """
             .stActionButton {visibility: hidden;}
             .css-14xtw13.e13qjvis0 {visibility: hidden;}
             #MainMenu {visibility: ;}
-            .styles_stateContainer__29Rp6 {visibility: hidden;}
-            .viewerBadge_link__1S137 {visibility: hidden;}
-            .viewerBadge_container__1QSob {visibility: hidden;}
-            .styles_viewerBadge__1yB5_ {visibility: hidden;}
-            a.viewerBadge_container__1QSob.styles_viewerBadge__1yB5_ {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
             """
