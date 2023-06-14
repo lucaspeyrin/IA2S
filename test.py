@@ -15,7 +15,7 @@ hide_streamlit_style = """
             .viewerBadge_link__1S137 {visibility: hidden;}
             .viewerBadge_container__1QSob {visibility: hidden;}
             .styles_viewerBadge__1yB5_ {visibility: hidden;}
-            .viewerBadge_container__1QSob.styles_viewerBadge__1yB5_ {visibility: hidden;}
+            a.viewerBadge_container__1QSob.styles_viewerBadge__1yB5_ {visibility: hidden;}
             footer {visibility: hidden;}
             </style>
             """
