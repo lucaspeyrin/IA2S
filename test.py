@@ -13,10 +13,10 @@ hide_streamlit_style = """
             .css-1avcm0n.e13qjvis2 {visibility: hidden;}
             .css-erpbzb.e1ewe7hr3 {visibility: hidden;}
             #MainMenu {visibility: hidden;}
-            .viewerBadge_link__1S137 {visibility: hidden; !important;}
-            .viewerBadge_container__1QSob {visibility: hidden; !important;}
-            .styles_viewerBadge__1yB5_ {visibility: hidden; !important;}
-            footer
+            .viewerBadge_link__1S137 {visibility: hidden !important;}
+            .viewerBadge_container__1QSob {visibility: hidden !important;}
+            .styles_viewerBadge__1yB5_ {visibility: hidden !important;}
+            footer {visibility: hidden;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
