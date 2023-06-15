@@ -2,7 +2,7 @@ import logging
 import queue
 import json
 import streamlit as st
-from streamlit import WebRtcMode, webrtc_streamer
+from streamlit_webrtc import WebRtcMode, webrtc_streamer
 from websocket import WebSocket
 
 logger = logging.getLogger(__name__)
