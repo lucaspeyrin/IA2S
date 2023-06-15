@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 # Variables de configuration pour l'API Deepgram
 DEEPGRAM_API_ENDPOINT = "wss://api.deepgram.com/v1/listen"
-DEEPGRAM_API_KEY = "Token"
+DEEPGRAM_API_KEY = "Token 71bfbc4f056b672867a26d3099023f749a62de68"
 
 # Fonction pour envoyer les données audio à l'API Deepgram
 def send_audio_to_deepgram(audio_data):
