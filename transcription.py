@@ -23,17 +23,26 @@ def extract_transcription(api_response):
 def close_stream():
     ws.send(json.dumps({"type": "CloseStream"}))
 
+# Obtenir la liste des périphériques audio disponibles
+def get_audio_devices():
+    # TODO: Implémenter la récupération de la liste des périphériques audio
+    # Retourner une liste de chaînes représentant les noms des périphériques audio
+    return ["Device 1", "Device 2"]
+
 # Configuration de la page Streamlit
 st.title("Transcription audio en temps réel avec Deepgram")
 transcription_placeholder = st.empty()
+
+# Sélection du périphérique audio
+selected_audio_device = st.selectbox("Sélectionnez le périphérique audio", get_audio_devices())
 
 # Connexion à l'API Deepgram en mode sendonly
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
+    audio_input_device=selected_audio_device,
     audio_receiver_size=256,
 )
-
 
 # Vérification de la connexion au flux audio
 if webrtc_ctx.audio_receiver:
@@ -43,7 +52,7 @@ if webrtc_ctx.audio_receiver:
 
     sound_window_len = 5000  # 5s
     sound_window_buffer = None
-    
+
     while True:
         try:
             audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
