@@ -36,7 +36,6 @@ transcription_placeholder = st.empty()
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
-    audio=True,  # Activer l'audio
     adapter="default",  # Utiliser la source audio par défaut
 )
 
