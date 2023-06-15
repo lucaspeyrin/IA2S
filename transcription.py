@@ -1,22 +1,17 @@
 import logging
 import queue
-import json
+import pydub
 import streamlit as st
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
-from websocket import WebSocket
 
 logger = logging.getLogger(__name__)
 
 # Variables de configuration pour l'API Deepgram
 DEEPGRAM_API_ENDPOINT = "wss://api.deepgram.com/v1/listen"
-DEEPGRAM_API_KEY = "Token 71bfbc4f056b672867a26d3099023f749a62de68"
+DEEPGRAM_API_KEY = "Token"
 
 # Fonction pour envoyer les données audio à l'API Deepgram
 def send_audio_to_deepgram(audio_data):
-    headers = {
-        "Authorization": f"Token {DEEPGRAM_API_KEY}",
-        "Content-Type": "application/octet-stream"
-    }
     ws.send_binary(audio_data)
 
 # Fonction pour extraire la transcription de la réponse de l'API Deepgram
@@ -36,25 +31,48 @@ transcription_placeholder = st.empty()
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
-    adapter="default",  # Utiliser la source audio par défaut
+    audio_receiver_size=256,
 )
 
+
 # Vérification de la connexion au flux audio
-if webrtc_ctx.state.playing:
+if webrtc_ctx.audio_receiver:
     # Connexion à l'API Deepgram
     ws = WebSocket()
     ws.connect(DEEPGRAM_API_ENDPOINT)
 
+    sound_window_len = 5000  # 5s
+    sound_window_buffer = None
+    
     while True:
         try:
-            audio_frames = webrtc_ctx.audio_frames.get(timeout=1)
+            audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
         except queue.Empty:
             logger.warning("Queue is empty. Abort.")
             break
 
+        sound_chunk = pydub.AudioSegment.empty()
         for audio_frame in audio_frames:
-            # Envoi des données audio à l'API Deepgram
-            send_audio_to_deepgram(audio_frame.to_ndarray().tobytes())
+            sound = pydub.AudioSegment(
+                data=audio_frame.to_ndarray().tobytes(),
+                sample_width=audio_frame.format.bytes,
+                frame_rate=audio_frame.sample_rate,
+                channels=len(audio_frame.layout.channels),
+            )
+            sound_chunk += sound
+
+        if len(sound_chunk) > 0:
+            if sound_window_buffer is None:
+                sound_window_buffer = pydub.AudioSegment.silent(
+                    duration=sound_window_len
+                )
+
+            sound_window_buffer += sound_chunk
+            if len(sound_window_buffer) > sound_window_len:
+                sound_window_buffer = sound_window_buffer[-sound_window_len:]
+
+        if sound_window_buffer:
+            send_audio_to_deepgram(sound_window_buffer.raw_data)
 
         # Réception des réponses de transcription de l'API Deepgram
         result = ws.recv()
@@ -70,4 +88,4 @@ if webrtc_ctx.state.playing:
     close_stream()
     ws.close()
 else:
-    logger.warning("Audio stream is not available. Abort.")
+    logger.warning("AudioReciver is not set. Abort.")
