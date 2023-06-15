@@ -36,20 +36,19 @@ transcription_placeholder = st.empty()
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
-    audio_receiver_size=256,
-    audio_device="default",  # Specify the default audio input device
+    audio=True,  # Activer l'audio
+    adapter="default",  # Utiliser la source audio par défaut
 )
 
-
 # Vérification de la connexion au flux audio
-if webrtc_ctx.audio_receiver:
+if webrtc_ctx.state.playing:
     # Connexion à l'API Deepgram
     ws = WebSocket()
     ws.connect(DEEPGRAM_API_ENDPOINT)
 
     while True:
         try:
-            audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
+            audio_frames = webrtc_ctx.audio_frames.get(timeout=1)
         except queue.Empty:
             logger.warning("Queue is empty. Abort.")
             break
@@ -62,7 +61,7 @@ if webrtc_ctx.audio_receiver:
         result = ws.recv()
         # Traitement de la réponse de l'API Deepgram (extraction de la transcription, etc.)
         # Vous devrez adapter cette partie en fonction de la structure de réponse de l'API Deepgram
-        
+
         # Affichage de la transcription sur la page Streamlit
         if result:
             transcription = extract_transcription(result)  # Fonction à adapter pour extraire la transcription de la réponse
@@ -72,4 +71,4 @@ if webrtc_ctx.audio_receiver:
     close_stream()
     ws.close()
 else:
-    logger.warning("AudioReciver is not set. Abort.")
+    logger.warning("Audio stream is not available. Abort.")
