@@ -37,7 +37,6 @@ webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
     audio_receiver_size=256,
-    rtc_configuration={"iceServers": []},  # Vous devrez ajouter des serveurs STUN/TURN si nécessaire
     media_stream_constraints={"audio": True},
 )
 
