@@ -36,8 +36,7 @@ transcription_placeholder = st.empty()
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
-    audio_receiver_size=256,
-    media_stream_constraints={"audio": True},
+    audio_receiver_size=256
 )
 
 # Vérification de la connexion au flux audio
