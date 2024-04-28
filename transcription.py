@@ -10,7 +10,7 @@ if 'image_url' not in st.session_state:
 
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
-    st.session_state.coordinates = False
+    st.session_state.ignore = False
 
 # Fonction pour récupérer les données d'image de l'API
 def get_image_data_from_api(coordinates):
@@ -69,9 +69,12 @@ st.write(coordinates)
 
 if coordinates is not None and st.session_state.coordinates is None:
     st.session_state.coordinates = coordinates
+    st.session_state.ignore = False
     st.experimental_rerun()
 elif st.session_state.coordinates == coordinates :
     st.session_state.ignore = True
     st.experimental_rerun()
 else:
     st.session_state.coordinates = coordinates
+    st.session_state.ignore = False
+
