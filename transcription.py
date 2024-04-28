@@ -9,6 +9,12 @@ st.set_page_config(
     layout="wide",
 )
 
+if 'image_url' not in st.session_state:
+    # Définir des variables globales pour stocker les données d'image
+    st.session_state.image_url = None
+    st.session_state.image_width = None
+    st.session_state.image_height = None
+
 def get_image_data_from_api(coordinates):
     api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
     response = requests.post(api_url, json={"coordinates": coordinates})
