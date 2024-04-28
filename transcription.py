@@ -14,6 +14,8 @@ if 'image_url' not in st.session_state:
     st.session_state.image_url = None
     st.session_state.image_width = None
     st.session_state.image_height = None
+
+if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
 
 def get_image_data_from_api(coordinates):
@@ -56,5 +58,5 @@ value = streamlit_image_coordinates(
     key="url",
 )
 
-st.write(value)
 st.session_state.coordinates = value
+st.write(value)
