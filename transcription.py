@@ -1,35 +1,29 @@
 import streamlit as st
-from streamlit_image_coordinates import streamlit_image_coordinates
 import requests
 
-def send_click_coordinates(x, y):
-    url = "https://api.ia2s.app/webhook/streamlit/click"
-    data = {"x": x, "y": y}
-    response = requests.post(url, json=data)
-    if response.status_code == 200:
-        st.success("Coordonnées du clic envoyées avec succès !")
-    else:
-        st.error("Erreur lors de l'envoi des coordonnées du clic.")
-
-def main():
-    st.title("Application Streamlit pour les clics sur les images")
-
-    # Demander la première image en utilisant votre API
+# Fonction pour appeler l'API et récupérer l'URL de l'image
+def get_image_url():
     response = requests.get("https://api.ia2s.app/webhook/streamlit/screenshot")
-    if response.status_code == 200:
-        image_data = response.json()["data"]
-        st.image(image_data, use_column_width=True, caption="Cliquez sur l'image")
+    data = response.json()
+    return data.get("url")
 
-        # Récupérer les coordonnées du clic de l'utilisateur
-        value = streamlit_image_coordinates(image_data, key="local")
-        st.write(value)
+# Fonction pour envoyer les coordonnées (x, y) à l'API
+def send_click_coordinates(x, y):
+    payload = {"x": x, "y": y}
+    requests.post("https://api.ia2s.app/webhook/streamlit/click", json=payload)
 
-        # Envoyer les coordonnées du clic à votre API
-        if value:
-            x, y = value["x"], value["y"]
-            send_click_coordinates(x, y)
-    else:
-        st.error("Erreur lors de la récupération de l'image.")
+# Appel de la fonction pour obtenir l'URL de l'image
+image_url = get_image_url()
 
-if __name__ == "__main__":
-    main()
+# Affichage de l'image dans l'application Streamlit
+if image_url:
+    st.image(image_url, use_column_width=True, caption="Cliquez sur l'image")
+
+    # Gestion du clic sur l'image
+    if st.button("Cliquez ici"):
+        click_coordinates = st.image_coordinates(image_url)
+        x, y = click_coordinates["x"], click_coordinates["y"]
+        send_click_coordinates(x, y)
+        st.success(f"Coordonnées du clic: x={x}, y={y}")
+else:
+    st.error("Impossible de récupérer l'image. Veuillez réessayer plus tard.")
