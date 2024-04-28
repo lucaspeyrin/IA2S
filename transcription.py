@@ -16,10 +16,9 @@ def get_image_from_api():
     image_url = data.get("url")
     return image_url
 
-def send_coordinates_to_api(x, y):
+def send_coordinates_to_api(coordinates):
     api_url = "https://api.ia2s.app/webhook/streamlit/coordinates"
-    payload = {"x": x, "y": y}
-    response = requests.post(api_url, json=payload)
+    response = requests.post(api_url, json={"coordinates": coordinates})
     if response.status_code == 200:
         st.success("Coordinates sent successfully.")
     else:
@@ -29,20 +28,12 @@ def send_coordinates_to_api(x, y):
 
 st.code("pip install streamlit-image-coordinates")
 
-image_url = get_image_from_api()
+"Try clicking on the image below."
 
-if image_url:
-    "Try clicking on the image below."
+value = streamlit_image_coordinates(
+    get_image_from_api(),
+    key="url",
+)
 
-    value = streamlit_image_coordinates(
-        image_url,
-        key="url",
-    )
-
-    if value is not None:
-        x, y = value
-
-        if st.button("Send Coordinates"):
-            send_coordinates_to_api(x, y)
-else:
-    st.error("Failed to retrieve image from the API.")
+if st.button("Send Coordinates"):
+    send_coordinates_to_api(value)
