@@ -32,6 +32,7 @@ def send_coordinates_to_api(coordinates):
 
 value = streamlit_image_coordinates(
     get_image_from_api(),
+    width=300
     key="url",
 )
 
@@ -43,6 +44,6 @@ if st.button("Send Coordinates"):
         new_image_url = response_data.get("url")
         if new_image_url:
             st.write("New Image:")
-            st.image(new_image_url)
+            st.image(new_image_url, width=300)
         else:
             st.warning("No new image URL received.")
