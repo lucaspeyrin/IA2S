@@ -62,3 +62,5 @@ st.write(coordinates)
 if coordinates is not None and st.session_state.coordinates is None:
     st.session_state.coordinates = coordinates
     st.experimental_rerun()
+else:
+    st.session_state.coordinates = coordinates
