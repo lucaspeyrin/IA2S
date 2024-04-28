@@ -29,16 +29,19 @@ def get_image_data_from_api(coordinates):
     return st.session_state.image_url, st.session_state.image_width, st.session_state.image_height
 
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
-    x_percentage = (coordinates["x"] / image_width) * 100
-    y_percentage = (coordinates["y"] / image_height) * 100
-    return {"x": x_percentage, "y": y_percentage}
+    if "x" in coordinates and "y" in coordinates:
+        x_percentage = (coordinates["x"] / image_width) * 100
+        y_percentage = (coordinates["y"] / image_height) * 100
+        return {"x": x_percentage, "y": y_percentage}
+    else:
+        return {}
+
 
 "# :dart: Streamlit Image Coordinates"
 
 "Try clicking on the image below."
 
-if st.session_state.coordinates != None:
-    st.session_state.coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+st.session_state.coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.coordinates)
 
