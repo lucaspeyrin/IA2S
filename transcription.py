@@ -36,47 +36,35 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 # Affichage de l'interface utilisateur Streamlit
 st.title("Streamlit Image Coordinates")
 
-# Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
-displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
-displayed_width = 300
-
-# Affichage de l'image avec les coordonnées
-st.session_state.coordinates = streamlit_image_coordinates(
-    st.session_state.image_url,
-    width=displayed_width,
-    height=displayed_height,
-    key="url",
-)
-
-# Affichage des coordonnées
-st.write(st.session_state.coordinates)
-
-# Calculer les coordonnées en pourcentage en premier
-st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
-
-# Obtenir les données d'image de l'API en utilisant les coordonnées en pourcentage
-if st.session_state.coordinates is None:
-    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
-    st.write("First execution")
-else:
-    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
-    st.write("Next execution")
-
-
-
-
-
-
-st.title('Counter Example using Callbacks with args')
-if 'count' not in st.session_state:
-    st.session_state.count = 0
-
-increment_value = st.number_input('Enter a value', value=0, step=1)
-
-def increment_counter(increment_value):
-    st.session_state.count += increment_value
-
-increment = st.button('Increment', on_click=increment_counter,
-    args=(increment_value, ))
-
-st.write('Count = ', st.session_state.count)
+with st.echo("below"):
+    # Calculer les coordonnées en pourcentage en premier
+    st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+    
+    # Obtenir les données d'image de l'API en utilisant les coordonnées en pourcentage
+    if st.session_state.coordinates is None:
+        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
+        st.write("First execution")
+    else:
+        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
+        st.write("Next execution")
+    
+    # Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
+    displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
+    displayed_width = 300
+    
+    # Affichage de l'image avec les coordonnées
+    st.session_state.coordinates = streamlit_image_coordinates(
+        st.session_state.image_url,
+        width=displayed_width,
+        height=displayed_height,
+        key="url",
+    )
+    
+    # Affichage des coordonnées
+    st.write(st.session_state.coordinates)
+    
+    
+    increment = st.button('Increment', on_click=increment_counter,
+        args=(increment_value, ))
+    
+    st.write('Count = ', st.session_state.count)
