@@ -3,42 +3,30 @@ import requests
 from PIL import Image
 from io import BytesIO
 
-# Fonction pour récupérer l'image depuis l'API
-def get_image_from_api():
-    api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
+# Fonction pour récupérer l'image de l'API
+def get_image_from_api(api_url):
     response = requests.get(api_url)
     if response.status_code == 200:
-        image_url = response.json().get("url")
-        if image_url:
-            # Télécharger l'image depuis l'URL
-            image_response = requests.get(image_url)
-            if image_response.status_code == 200:
-                # Ouvrir l'image avec PIL
-                image = Image.open(BytesIO(image_response.content))
-                return image
-    return None
+        image_bytes = BytesIO(response.content)
+        image = Image.open(image_bytes)
+        return image
+    else:
+        st.error("Failed to fetch image from API")
+        return None
 
-# Créez l'application Streamlit
-st.set_page_config(
-    page_title="Streamlit Image Coordinates",
-    page_icon="🎯",
-    layout="wide",
-)
+# URL de l'API
+api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
 
-# Affichez le titre
-st.title(":dart: Streamlit Image Coordinates")
+# Récupération de l'image depuis l'API
+image = get_image_from_api(api_url)
 
-# Récupérez l'image depuis l'API
-image = get_image_from_api()
-
+# Vérification si l'image a été récupérée avec succès
 if image:
-    # Affichez l'image
-    st.image(image, use_column_width=True, caption="Click on the image")
+    # Affichage de l'image
+    st.image(image, use_column_width=True)
 
-    # Récupérez les coordonnées du clic
-    click_coordinates = st.image_coordinates(image)
+    # Récupération des coordonnées des clics
+    value = st.image_coords(image)
 
-    # Affichez les coordonnées
-    st.write("Coordinates of the last click:", click_coordinates)
-else:
-    st.write("Failed to retrieve image from the API.")
+    # Affichage des coordonnées des clics
+    st.write("Coordinates of last click:", value)
