@@ -56,4 +56,4 @@ st.write(value)
 
 if st.button("Send Coordinates"):
     percentage_coordinates = calculate_percentage_coordinates(value, image_width, image_height)
-    response_data = get_image_data_from_api(percentage_coordinates)
+    image_url, image_width, image_height = get_image_data_from_api(percentage_coordinates)
