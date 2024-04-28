@@ -28,14 +28,14 @@ def send_coordinates_to_api(coordinates):
 
 "# :dart: Streamlit Image Coordinates"
 
-st.code("pip install streamlit-image-coordinates")
-
 "Try clicking on the image below."
 
 value = streamlit_image_coordinates(
     get_image_from_api(),
     key="url",
 )
+
+st.write(value)
 
 if st.button("Send Coordinates"):
     response_data = send_coordinates_to_api(value)
