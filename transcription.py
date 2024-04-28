@@ -62,3 +62,4 @@ st.session_state.coordinates = streamlit_image_coordinates(
 
 # Affichage des coordonnées
 st.write(st.session_state.coordinates)
+st.experimental_rerun()
