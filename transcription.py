@@ -23,7 +23,7 @@ def get_image_data_from_api(coordinates):
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
     if coordinates:
         x_percentage = (coordinates["x"] / image_width) * 100
-        y_percentage = (coordinates["y"] / image_height) * 100
+        y_percentage = 100 - ((coordinates["y"] / image_height) * 100)
         return {"x": x_percentage, "y": y_percentage}
     else:
         return {}
