@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from PIL import Image
 from io import BytesIO
+from streamlit_image_coordinates import streamlit_image_coordinates
 
 # Fonction pour récupérer l'image de l'API
 def get_image_from_api(api_url):
