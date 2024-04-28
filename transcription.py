@@ -12,9 +12,6 @@ if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
     st.session_state.ignore = False
 
-# Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
-displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
-displayed_width = 300
 
 # Fonction pour récupérer les données d'image de l'API
 def get_image_data_from_api(coordinates):
@@ -53,6 +50,11 @@ elif st.session_state.coordinates is not None and st.session_state.ignore is not
     # Si les coordonnées sont définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
     st.write("Exécution suivante")
+
+
+# Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
+displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
+displayed_width = 300
 
 
 # Affichage de l'image avec les coordonnées
