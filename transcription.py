@@ -50,8 +50,6 @@ elif st.session_state.coordinates is not None and st.session_state.ignore is not
     # Si les coordonnées sont définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
     st.write("Exécution suivante")
-elif st.session_state.coordinates is None and st.session_state.image_url is not None and st.session_state.ignore is not True:
-    st.rerun()
 
 
 # Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
