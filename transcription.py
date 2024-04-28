@@ -18,12 +18,6 @@ def get_image_data_from_api(coordinates):
     data = response.json()
     return data.get("url"), data.get("width"), data.get("height")
 
-# Fonction de callback pour mettre à jour les variables de session
-def update_image_data(image_url, image_width, image_height):
-    st.session_state.image_url = image_url
-    st.session_state.image_width = image_width
-    st.session_state.image_height = image_height
-
 # Fonction pour calculer les coordonnées en pourcentage
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
     if coordinates:
@@ -57,7 +51,6 @@ st.session_state.coordinates = streamlit_image_coordinates(
     width=displayed_width,
     height=displayed_height,
     key="url",
-    on_change=update_image_data,
 )
 
 # Affichage des coordonnées
