@@ -40,7 +40,12 @@ st.title("Streamlit Image Coordinates")
 st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 # Obtenir les données d'image de l'API en utilisant les coordonnées en pourcentage
-st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.coordinates)
+if st.session_state.coordinates is not None:
+    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
+    st.write("First execution")
+else
+    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
+    st.write("Next execution")
 
 # Calculer la hauteur affichée en fonction de la largeur affichée de 300 pixels
 displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
@@ -56,13 +61,3 @@ st.session_state.coordinates = streamlit_image_coordinates(
 
 # Affichage des coordonnées
 st.write(st.session_state.coordinates)
-
-st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
-
-# Affichage de l'image avec les coordonnées
-st.session_state.coordinates = streamlit_image_coordinates(
-    st.session_state.image_url,
-    width=displayed_width,
-    height=displayed_height,
-    key="url",
-)
