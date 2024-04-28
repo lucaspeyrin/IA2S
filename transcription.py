@@ -55,5 +55,5 @@ coordinates = streamlit_image_coordinates(
 
 # Affichage des coordonnées
 st.write(coordinates)
-if coordinates != st.session_state.coordinates
-st.experimental_rerun()
+if coordinates != st.session_state.coordinates:
+    st.experimental_rerun()
