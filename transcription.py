@@ -14,6 +14,7 @@ if 'image_url' not in st.session_state:
     st.session_state.image_url = None
     st.session_state.image_width = None
     st.session_state.image_height = None
+    st.session_state.coordinates = {}
 
 def get_image_data_from_api(coordinates):
     api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
@@ -36,9 +37,10 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 
 "Try clicking on the image below."
 
-if st.session_state.image_url is None:
-    # Appel API initial pour obtenir les données d'image
-    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
+if st.session_state.coordinates != None:
+    st.session_state.coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+
+st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.coordinates)
 
 # Calculate the displayed height based on the displayed width of 300 pixels
 displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
@@ -52,7 +54,4 @@ value = streamlit_image_coordinates(
 )
 
 st.write(value)
-
-if st.button("Send Coordinates"):
-    percentage_coordinates = calculate_percentage_coordinates(value, st.session_state.image_width, st.session_state.image_height)
-    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(percentage_coordinates)
+st.session_state.coordinates = value
