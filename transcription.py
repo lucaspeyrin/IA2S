@@ -18,6 +18,9 @@ if 'image_url' not in st.session_state:
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
 
+if 'value' not in st.session_state:
+    st.session_state.value = None
+
 def get_image_data_from_api(coordinates):
     api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
     response = requests.post(api_url, json={"coordinates": coordinates})
