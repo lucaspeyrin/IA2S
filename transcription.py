@@ -1,8 +1,6 @@
 import streamlit as st
 import requests
 
-from streamlit_image_coordinates import streamlit_image_coordinates
-
 # Fonction pour récupérer la prochaine image depuis l'API
 def get_next_image():
     response = requests.get("https://api.ia2s.app/webhook/streamlit/screenshot")
