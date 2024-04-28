@@ -29,14 +29,20 @@ def send_coordinates_to_api(x, y):
 
 st.code("pip install streamlit-image-coordinates")
 
-"Try clicking on the image below."
+image_url = get_image_from_api()
 
-value = streamlit_image_coordinates(
-    get_image_from_api(),
-    key="url",
-)
+if image_url:
+    "Try clicking on the image below."
 
-x, y = value
+    value = streamlit_image_coordinates(
+        image_url,
+        key="url",
+    )
 
-if st.button("Send Coordinates"):
-    send_coordinates_to_api(x, y)
+    if value is not None:
+        x, y = value
+
+        if st.button("Send Coordinates"):
+            send_coordinates_to_api(x, y)
+else:
+    st.error("Failed to retrieve image from the API.")
