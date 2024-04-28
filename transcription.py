@@ -70,7 +70,7 @@ st.write(coordinates)
 if coordinates is not None and st.session_state.coordinates is None:
     st.session_state.coordinates = coordinates
     st.experimental_rerun()
-elif st.session_state.coordinates = coordinates :
+elif st.session_state.coordinates == coordinates :
     st.session_state.ignore = True
     st.experimental_rerun()
 else:
