@@ -9,24 +9,14 @@ st.set_page_config(
     layout="wide",
 )
 
-def get_image_data_from_api():
+def get_image_data_from_api(coordinates):
     api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
-    response = requests.get(api_url)
+    response = requests.post(api_url, json={"coordinates": coordinates})
     data = response.json()
     image_url = data.get("url")
     image_width = data.get("width")
     image_height = data.get("height")
     return image_url, image_width, image_height
-
-def send_coordinates_to_api(coordinates):
-    api_url = "https://api.ia2s.app/webhook/streamlit/coordinates"
-    response = requests.post(api_url, json={"coordinates": coordinates})
-    if response.status_code == 200:
-        st.success("Coordinates sent successfully.")
-        return response.json()
-    else:
-        st.error("Failed to send coordinates.")
-        return None
 
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
     x_percentage = (coordinates["x"] / image_width) * 100
@@ -37,7 +27,7 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 
 "Try clicking on the image below."
 
-image_url, image_width, image_height = get_image_data_from_api()
+image_url, image_width, image_height = get_image_data_from_api({})
 
 # Calculate the displayed height based on the displayed width of 300 pixels
 displayed_height = int((image_height / image_width) * 300)
@@ -54,7 +44,7 @@ st.write(value)
 
 if st.button("Send Coordinates"):
     percentage_coordinates = calculate_percentage_coordinates(value, displayed_width, displayed_height)
-    response_data = send_coordinates_to_api(percentage_coordinates)
+    response_data = get_image_data_from_api(percentage_coordinates)
     if response_data:
         image_url = response_data.get("url")  # Update image_url if response_data exists
 
