@@ -38,6 +38,12 @@ value = streamlit_image_coordinates(
 
 st.write(value)
 
+st.write("Coordinates (in percentage):")
+if value:
+    image_width, image_height = value["image_dimensions"]
+    coordinates_percentage = [(x / image_width * 100, y / image_height * 100) for x, y in value["coordinates"]]
+    st.write(coordinates_percentage)
+
 if st.button("Send Coordinates"):
     response_data = send_coordinates_to_api(value)
     if response_data:
