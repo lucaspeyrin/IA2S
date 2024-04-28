@@ -1,3 +1,5 @@
+import streamlit as st
+import requests
 from streamlit_image_coordinates import streamlit_image_coordinates
 
 # Vérifier si les variables d'image sont déjà initialisées dans la session
