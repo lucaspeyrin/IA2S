@@ -1,33 +1,30 @@
 import streamlit as st
 import requests
-from PIL import Image
-from io import BytesIO
+
 from streamlit_image_coordinates import streamlit_image_coordinates
 
-# Fonction pour récupérer l'image de l'API
-def get_image_from_api(api_url):
+st.set_page_config(
+    page_title="Streamlit Image Coordinates",
+    page_icon="🎯",
+    layout="wide",
+)
+
+def get_image_from_api():
+    api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
     response = requests.get(api_url)
-    if response.status_code == 200:
-        image_bytes = BytesIO(response.content)
-        image = Image.open(image_bytes)
-        return image
-    else:
-        st.error("Failed to fetch image from API")
-        return None
+    data = response.json()
+    image_url = data.get("url")
+    return image_url
 
-# URL de l'API
-api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
+"# :dart: Streamlit Image Coordinates"
 
-# Récupération de l'image depuis l'API
-image = get_image_from_api(api_url)
+st.code("pip install streamlit-image-coordinates")
 
-# Vérification si l'image a été récupérée avec succès
-if image:
-    # Affichage de l'image
-    st.image(image, use_column_width=True)
+"Try clicking on the image below."
 
-    # Récupération des coordonnées des clics
-    value = st.image_coords(image)
+value = streamlit_image_coordinates(
+    get_image_from_api(),
+    key="url",
+)
 
-    # Affichage des coordonnées des clics
-    st.write("Coordinates of last click:", value)
+st.write(value)
