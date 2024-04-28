@@ -32,13 +32,12 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 st.title("Streamlit Image Coordinates")
 
 # Calculer les coordonnées en pourcentage en premier
-percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+#percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 #if percentage_coordinates = st.session_state.percentage_coordinates:
 #    st.experimental_rerun()
 #else:
 #    st.session_state.percentage_coordinates = percentage_coordinates
-st.session_state.percentage_coordinates = percentage_coordinates
 
 
 # Obtenir les données d'image de l'API en utilisant les coordonnées en pourcentage
@@ -70,6 +69,7 @@ st.write(coordinates)
 if coordinates is not None and st.session_state.coordinates is None:
     st.session_state.coordinates = coordinates
     st.session_state.ignore = False
+    st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
     st.rerun()
 elif st.session_state.coordinates == coordinates and coordinates is not None and st.session_state.ignore is not True:
     st.session_state.ignore = True
@@ -78,5 +78,6 @@ elif st.session_state.coordinates == coordinates and coordinates is not None and
     st.session_state.ignore = True
 else:
     st.session_state.coordinates = coordinates
+    st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
     st.session_state.ignore = False
 
