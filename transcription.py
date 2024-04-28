@@ -51,12 +51,11 @@ st.session_state.image_url, st.session_state.image_width, st.session_state.image
 displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
 displayed_width = 300
 
-value = streamlit_image_coordinates(
+st.session_state.coordinates = streamlit_image_coordinates(
     st.session_state.image_url,
     width=displayed_width,
     height=displayed_height,
     key="url",
 )
 
-st.session_state.coordinates = value
-st.write(value)
+st.write(st.session_state.coordinates)
