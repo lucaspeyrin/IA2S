@@ -1,12 +1,12 @@
 import streamlit as st
 import requests
 
-# Initialisation de la clé "image_clicked" dans st.session_state
-if "image_clicked" not in st.session_state:
-    st.session_state["image_clicked"] = None
+# Initialisation de la clé "last_click_coordinates" dans st.session_state
+if "last_click_coordinates" not in st.session_state:
+    st.session_state["last_click_coordinates"] = None
 
-# Fonction pour récupérer la prochaine image depuis l'API
-def get_next_image():
+# Fonction pour récupérer l'image depuis l'API
+def get_image():
     response = requests.get("https://api.ia2s.app/webhook/streamlit/screenshot")
     data = response.json()
     if "url" in data:
@@ -29,23 +29,26 @@ st.set_page_config(
 # Titre de l'application
 st.markdown("# :dart: Streamlit Image Coordinates")
 
-# Fonction pour afficher l'image et récupérer les coordonnées du clic
-def display_image_with_coordinates(image_url):
-    value = st.image(image_url, use_column_width=True, caption="Click on the image")
-    if value:
-        click_coordinates = st.session_state["image_clicked"]
-        if click_coordinates:
-            x, y = click_coordinates
-            send_click_coordinates(x, y)
-            st.info(f"Coordinates clicked: ({x}, {y})")
+# Affichage de l'image et marquage de l'emplacement du dernier clic
+def display_image(image_url):
+    # Afficher l'image avec une taille maximale de 500 pixels
+    st.image(image_url, use_column_width=True, caption="Click on the image", width=500)
+    
+    # Récupérer les coordonnées du dernier clic
+    last_click_coordinates = st.session_state["last_click_coordinates"]
+    if last_click_coordinates:
+        x, y = last_click_coordinates
+        # Marquer l'emplacement du dernier clic sur l'image
+        st.markdown(f'<div style="position:relative"><img src="{image_url}" style="width:500px"><div style="position:absolute;top:{y}px;left:{x}px;"><svg height="10" width="10"><circle cx="5" cy="5" r="5" fill="red"/></svg></div></div>', unsafe_allow_html=True)
 
-# Fonction principale de l'application
-def main():
-    image_url = get_next_image()
-    if image_url:
-        display_image_with_coordinates(image_url)
-    else:
-        st.error("Failed to fetch the next image from the API.")
+# Récupérer l'image une seule fois au chargement de l'application
+image_url = get_image()
 
-if __name__ == "__main__":
-    main()
+# Afficher l'image et marquer l'emplacement du dernier clic
+display_image(image_url)
+
+# Si l'utilisateur clique sur l'image, enregistrer les coordonnées du clic
+if st.session_state.mouse_click:
+    x, y = st.session_state.mouse_click["x"], st.session_state.mouse_click["y"]
+    st.session_state["last_click_coordinates"] = (x, y)
+    send_click_coordinates(x, y)
