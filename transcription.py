@@ -53,11 +53,12 @@ displayed_height = int((st.session_state.image_height / st.session_state.image_w
 displayed_width = 300
 
 # Affichage de l'image avec les coordonnées
-with st.session_state.coordinates = streamlit_image_coordinates(
+st.session_state.coordinates = streamlit_image_coordinates(
     st.session_state.image_url,
     width=displayed_width,
     height=displayed_height,
     key="url",
+    sync=True,
 )
 
 # Affichage des coordonnées
