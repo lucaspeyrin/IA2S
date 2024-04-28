@@ -46,7 +46,7 @@ if st.session_state.coordinates is None and st.session_state.image_url is None:
     # Si les coordonnées et l'URL de l'image ne sont pas déjà définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
     st.write("Première exécution")
-elif st.session_state.coordinates is not None and st.session_state.ignore = False:
+elif st.session_state.coordinates is not None and st.session_state.ignore is not True:
     # Si les coordonnées sont définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
     st.write("Exécution suivante")
