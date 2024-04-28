@@ -32,7 +32,7 @@ def send_coordinates_to_api(coordinates):
 
 value = streamlit_image_coordinates(
     get_image_from_api(),
-    width=300
+    width=300,
     key="url",
 )
 
