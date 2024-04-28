@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 
+from streamlit_image_coordinates import streamlit_image_coordinates
+
 st.set_page_config(
     page_title="Streamlit Image Coordinates",
     page_icon="🎯",
@@ -28,13 +30,14 @@ def send_coordinates_to_api(coordinates):
 
 "Try clicking on the image below."
 
-image_url = get_image_from_api()
-st.image(image_url)
+value = streamlit_image_coordinates(
+    get_image_from_api(),
+    key="url",
+)
 
 st.write(value)
 
 if st.button("Send Coordinates"):
-    value = "Coordinates" # Placeholder for coordinates, you need to replace this with actual coordinates
     response_data = send_coordinates_to_api(value)
     if response_data:
         new_image_url = response_data.get("url")
