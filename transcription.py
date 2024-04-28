@@ -21,8 +21,10 @@ def send_coordinates_to_api(coordinates):
     response = requests.post(api_url, json={"coordinates": coordinates})
     if response.status_code == 200:
         st.success("Coordinates sent successfully.")
+        return response.json()
     else:
         st.error("Failed to send coordinates.")
+        return None
 
 "# :dart: Streamlit Image Coordinates"
 
@@ -36,4 +38,11 @@ value = streamlit_image_coordinates(
 )
 
 if st.button("Send Coordinates"):
-    send_coordinates_to_api(value)
+    response_data = send_coordinates_to_api(value)
+    if response_data:
+        new_image_url = response_data.get("url")
+        if new_image_url:
+            st.write("New Image:")
+            st.image(new_image_url)
+        else:
+            st.warning("No new image URL received.")
