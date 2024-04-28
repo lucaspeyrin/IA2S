@@ -63,8 +63,3 @@ with st.echo("below"):
     # Affichage des coordonnées
     st.write(st.session_state.coordinates)
     
-    
-    increment = st.button('Increment', on_click=increment_counter,
-        args=(increment_value, ))
-    
-    st.write('Count = ', st.session_state.count)
