@@ -59,3 +59,10 @@ st.write(st.session_state.coordinates)
 
 st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
 
+# Affichage de l'image avec les coordonnées
+st.session_state.coordinates = streamlit_image_coordinates(
+    st.session_state.image_url,
+    width=displayed_width,
+    height=displayed_height,
+    key="url",
+)
