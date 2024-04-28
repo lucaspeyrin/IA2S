@@ -71,7 +71,7 @@ if coordinates is not None and st.session_state.coordinates is None:
     st.session_state.coordinates = coordinates
     st.session_state.ignore = False
     st.rerun()
-elif st.session_state.coordinates == coordinates and coordinates is not None:
+elif st.session_state.coordinates == coordinates and coordinates is not None and st.session_state.ignore is not True:
     st.session_state.ignore = True
     st.rerun()
 else:
