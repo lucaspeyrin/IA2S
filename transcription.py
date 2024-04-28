@@ -34,11 +34,11 @@ st.title("Streamlit Image Coordinates")
 st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 # Obtenir les données d'image de l'API en utilisant les coordonnées en pourcentage
-if "coordinates" not in st.session_state and "image_url" not in st.session_state:
+if st.session_state.coordinates is None and st.session_state.image_url is None:
     # Si les coordonnées et l'URL de l'image ne sont pas déjà définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api({})
     st.write("Première exécution")
-elif "coordinates" in st.session_state:
+elif st.session_state.coordinates is not None:
     # Si les coordonnées sont définies dans la session
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height = get_image_data_from_api(st.session_state.percentage_coordinates)
     st.write("Exécution suivante")
