@@ -1,6 +1,10 @@
 import streamlit as st
 import requests
 
+# Initialisation de la clé "image_clicked" dans st.session_state
+if "image_clicked" not in st.session_state:
+    st.session_state["image_clicked"] = None
+
 # Fonction pour récupérer la prochaine image depuis l'API
 def get_next_image():
     response = requests.get("https://api.ia2s.app/webhook/streamlit/screenshot")
