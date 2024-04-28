@@ -45,9 +45,6 @@ if image_url is None:
 displayed_height = int((image_height / image_width) * 300)
 displayed_width = 300
 
-# Afficher l'image à partir de l'URL mise à jour
-st.image(image_url, width=displayed_width)
-
 value = streamlit_image_coordinates(
     image_url,
     width=displayed_width,
@@ -55,8 +52,12 @@ value = streamlit_image_coordinates(
     key="url",
 )
 
-st.write(value)
-
-if st.button("Send Coordinates"):
+# Observer les changements de la valeur `value`
+if st.session_state.url != value:
+    st.session_state.url = value
     percentage_coordinates = calculate_percentage_coordinates(value, image_width, image_height)
-    image_url, image_width, image_height = get_image_data_from_api(percentage_coordinates)
+    get_image_data_from_api(percentage_coordinates)
+
+# Afficher l'image mise à jour
+st.image(image_url, width=displayed_width, caption="Updated Image")
+
