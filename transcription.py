@@ -16,6 +16,15 @@ def get_image_from_api():
     image_url = data.get("url")
     return image_url
 
+def send_coordinates_to_api(x, y):
+    api_url = "https://api.ia2s.app/webhook/streamlit/coordinates"
+    payload = {"x": x, "y": y}
+    response = requests.post(api_url, json=payload)
+    if response.status_code == 200:
+        st.success("Coordinates sent successfully.")
+    else:
+        st.error("Failed to send coordinates.")
+
 "# :dart: Streamlit Image Coordinates"
 
 st.code("pip install streamlit-image-coordinates")
@@ -27,4 +36,7 @@ value = streamlit_image_coordinates(
     key="url",
 )
 
-st.write(value)
+x, y = value
+
+if st.button("Send Coordinates"):
+    send_coordinates_to_api(x, y)
