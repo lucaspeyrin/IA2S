@@ -57,5 +57,3 @@ if st.button("Send Coordinates"):
     response_data = send_coordinates_to_api(percentage_coordinates)
     if response_data:
         image_url = response_data.get("url")
-        else:
-            st.warning("No new image URL received.")
