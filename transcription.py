@@ -46,7 +46,7 @@ displayed_height = int((image_height / image_width) * 300)
 displayed_width = 300
 
 # Afficher l'image à partir de l'URL mise à jour
-st.image(image_url, width=displayed_width, height=displayed_height)
+st.image(image_url, width=displayed_width)
 
 value = streamlit_image_coordinates(
     image_url,
