@@ -69,6 +69,10 @@ st.title("Phone Id")
 # Input pour le phone id
 st.session_state.phone_id = st.text_input("Phone Id", st.session_state.phone_id)
 
+if st.session_state.ignore = True:
+    if st.button("Start"):
+        st.session_state.ignore = False
+
 # Si le phone id est rempli et l'image URL est vide, faire l'appel API pour obtenir les données de l'image
 if st.session_state.phone_id and not st.session_state.image_url and st.session_state.ignore is not True:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
