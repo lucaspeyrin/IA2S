@@ -75,6 +75,9 @@ if st.session_state.image_width and st.session_state.image_height:
     # Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
     displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
     displayed_width = 300
+else:
+    displayed_height = None
+    displayed_width = None
 
 # Affichage en colonnes
 col1, col2 = st.columns(2)
