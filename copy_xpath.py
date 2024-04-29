@@ -36,29 +36,30 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 def get_actions_from_api(coordinates, layout):
     if st.session_state.ignore == False:
         api_url = "https://api.ia2s.app/webhook/streamlit/actions"
-        try:
-            response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
-            response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-            data = response.json()
-            return data.get("actions")
-        except requests.exceptions.RequestException as e:
-            st.error(f"An error occurred while fetching actions from the API: {e}")
+        response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
+        if response.status_code != 200:
+            st.error(f"Error: API returned status code {response.status_code}")
             st.session_state.ignore = True
             return []
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+        data = response.json()
+        return data.get("actions")
     else:
         return []
 
 # Fonction pour récupérer les données de l'image de l'API avec gestion des erreurs
 def get_image_data_from_api(phone_id):
-    api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
-    try:
+    if st.session_state.ignore == False:
+        api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
+        if response.status_code != 200:
+            st.error(f"Error: API returned status code {response.status_code}")
+            st.session_state.ignore = True
+            return None, None, None, None
         response = requests.post(api_url, json={"phone_id": phone_id})
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
         data = response.json()
         return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
-    except requests.exceptions.RequestException as e:
-        st.error(f"An error occurred while fetching image data from the API: {e}")
-        st.session_state.ignore = True
+    else:
         return None, None, None, None
 
 # Titre "Phone Id"
