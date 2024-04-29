@@ -87,6 +87,13 @@ col1, col2 = st.columns(2)
 
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
+    # Bouton refresh pour rafraîchir les données de l'image
+    if st.button("Refresh"):
+        st.session_state.ignore = False
+        st.session_state.image_url = None
+        st.rerun()
+        st.session_state.actions = []
+        
     # Affichage de l'image avec les coordonnées
     coordinates = streamlit_image_coordinates(
         st.session_state.image_url,
@@ -105,12 +112,6 @@ with col1:
 
 # Colonne 2 : Bouton refresh et affichage des actions
 with col2:
-    # Bouton refresh pour rafraîchir les données de l'image
-    if st.button("Refresh"):
-        st.session_state.ignore = False
-        st.session_state.image_url = None
-        st.rerun()
-        st.session_state.actions = []
 
     # Titre "Actions"
     st.title("Actions")
