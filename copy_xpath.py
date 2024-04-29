@@ -107,10 +107,10 @@ with col1:
 with col2:
     # Bouton refresh pour rafraîchir les données de l'image
     if st.button("Refresh"):
-        st.session_state.actions = []
         st.session_state.ignore = False
         st.session_state.image_url = None
         st.rerun()
+        st.session_state.actions = []
 
     # Titre "Actions"
     st.title("Actions")
