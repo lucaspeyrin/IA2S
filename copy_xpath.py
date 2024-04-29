@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+from streamlit_image_coordinates import streamlit_image_coordinates
+
 
 # Initialisation des variables de session
 if 'image_url' not in st.session_state:
@@ -62,7 +64,7 @@ col1, col2 = st.columns(2)
 
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
-        # Affichage de l'image avec les coordonnées
+    # Affichage de l'image avec les coordonnées
     coordinates = streamlit_image_coordinates(
         st.session_state.image_url,
         width=displayed_width,
