@@ -40,6 +40,7 @@ def get_actions_from_api(coordinates, layout):
         return data.get("actions")
     except requests.exceptions.RequestException as e:
         st.error(f"An error occurred while fetching actions from the API: {e}")
+        st.session_state.ignore = True
         return []
 
 # Fonction pour récupérer les données de l'image de l'API avec gestion des erreurs
@@ -52,6 +53,7 @@ def get_image_data_from_api(phone_id):
         return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
     except requests.exceptions.RequestException as e:
         st.error(f"An error occurred while fetching image data from the API: {e}")
+        st.session_state.ignore = True
         return None, None, None, None
 
 # Titre "Phone Id"
@@ -61,7 +63,7 @@ st.title("Phone Id")
 st.session_state.phone_id = st.text_input("Phone Id", st.session_state.phone_id)
 
 # Si le phone id est rempli et l'image URL est vide, faire l'appel API pour obtenir les données de l'image
-if st.session_state.phone_id and not st.session_state.image_url:
+if st.session_state.phone_id and not st.session_state.image_url and st.session_state.ignore is not True:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
 
 
@@ -88,8 +90,8 @@ with col1:
     
     if coordinates:
         st.session_state.coordinates = coordinates
-        st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
         st.session_state.ignore = False
+        st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 # Colonne 2 : Bouton refresh et affichage des actions
 with col2:
@@ -97,12 +99,13 @@ with col2:
     if st.button("Refresh"):
         st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
         st.session_state.actions = []
+        st.session_state.ignore = False
 
     # Titre "Actions"
     st.title("Actions")
 
     # Si les coordonnées existent, appeler l'API pour obtenir les actions
-    if st.session_state.coordinates:
+    if st.session_state.coordinates and st.session_state.ignore is not True:
         actions = get_actions_from_api(
             {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"])/100, 
              "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"])/100}, 
