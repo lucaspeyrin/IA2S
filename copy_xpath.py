@@ -52,24 +52,31 @@ st.session_state.phone_id = st.text_input("Phone Id", st.session_state.phone_id)
 if st.session_state.phone_id and not st.session_state.image_url:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
 
-# Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
-displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
-displayed_width = 300
+if st.session_state.image_width and st.session_state.image_height:
+    # Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
+    displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
+    displayed_width = 300
 
 # Affichage en colonnes
 col1, col2 = st.columns(2)
 
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
-    coordinates = st.image(
+        # Affichage de l'image avec les coordonnées
+    coordinates = streamlit_image_coordinates(
         st.session_state.image_url,
         width=displayed_width,
-        caption="Image avec les coordonnées"
+        height=displayed_height,
+        key="url",
     )
-
-    st.session_state.coordinates = coordinates
-    st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
-    st.session_state.ignore = False
+    
+    # Affichage des coordonnées
+    st.write(coordinates)
+    
+    if coordinates:
+        st.session_state.coordinates = coordinates
+        st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+        st.session_state.ignore = False
 
 # Colonne 2 : Bouton refresh et affichage des actions
 with col2:
