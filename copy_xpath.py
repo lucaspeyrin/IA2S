@@ -70,6 +70,9 @@ if st.session_state.ignore == True:
         st.session_state.ignore = False
         st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
 
+if st.session_state.ignore is not True and st.session_state.image_url is None and st.session_state.phone_id is not None:
+    st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
+
 
 if st.session_state.image_width and st.session_state.image_height:
     # Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
@@ -106,10 +109,8 @@ with col2:
     if st.button("Refresh"):
         st.session_state.actions = []
         st.session_state.ignore = False
-        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
+        st.session_state.image_url = None
         st.rerun()
-
-
 
     # Titre "Actions"
     st.title("Actions")
