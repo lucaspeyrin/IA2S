@@ -107,7 +107,7 @@ with col1:
         st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 # Colonne 2 : Bouton refresh et affichage des actions
-if st.session_state.image_url
+if st.session_state.image_url:
     with col2:
         # Bouton refresh pour rafraîchir les données de l'image
         if st.button("Refresh"):
