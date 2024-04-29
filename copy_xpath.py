@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from PIL import Image
 from streamlit_image_coordinates import streamlit_image_coordinates
 
 
@@ -93,13 +94,15 @@ with col1:
         st.session_state.image_url = None
         st.rerun()
         st.session_state.actions = []
-        
+
+    image_data = requests.get(st.session_state.image_url)
+    
     # Affichage de l'image avec les coordonnées
     coordinates = streamlit_image_coordinates(
-        st.session_state.image_url,
+        Image.open(BytesIO(image_data.content)),
         width=displayed_width,
         height=displayed_height,
-        key="url",
+        key="pil",
     )
     
     # Affichage des coordonnées
