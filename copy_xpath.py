@@ -133,3 +133,4 @@ if st.session_state.image_url is None:
     if st.button("Start"):
         st.session_state.ignore = False
         st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
+        st.rerun()
