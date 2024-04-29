@@ -49,19 +49,16 @@ def get_actions_from_api(coordinates, layout):
 
 # Fonction pour récupérer les données de l'image de l'API avec gestion des erreurs
 def get_image_data_from_api(phone_id):
-    if st.session_state.ignore == False:
-        api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
-        response = requests.post(api_url, json={"phone_id": phone_id})
-        if response.status_code != 200:
-            st.session_state.ignore = True
-            st.error(f"Error: API returned status code {response.status_code}")
-            return None, None, None, None
-        response = requests.post(api_url, json={"phone_id": phone_id})
-        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-        data = response.json()
-        return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
-    else:
+    api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
+    response = requests.post(api_url, json={"phone_id": phone_id})
+    if response.status_code != 200:
+        st.session_state.ignore = True
+        st.error(f"Error: API returned status code {response.status_code}")
         return None, None, None, None
+    response = requests.post(api_url, json={"phone_id": phone_id})
+    response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+    data = response.json()
+    return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
 
 # Titre "Phone Id"
 st.title("Phone Id")
