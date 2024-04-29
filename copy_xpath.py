@@ -134,4 +134,4 @@ if st.session_state.image_url:
                 st.code(action["xpath"])
 else :
     with col2:
-
+        
