@@ -101,9 +101,9 @@ with col1:
         
         # Affichage des coordonnées
         st.write(coordinates)
-    
-    if coordinates:
         st.session_state.coordinates = coordinates
+        
+    if st.session_state.coordinates = coordinates:
         st.session_state.ignore = False
         st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
