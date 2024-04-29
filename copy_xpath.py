@@ -51,6 +51,7 @@ def get_actions_from_api(coordinates, layout):
 def get_image_data_from_api(phone_id):
     if st.session_state.ignore == False:
         api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
+        response = requests.post(api_url, json={"phone_id": phone_id})
         if response.status_code != 200:
             st.error(f"Error: API returned status code {response.status_code}")
             st.session_state.ignore = True
