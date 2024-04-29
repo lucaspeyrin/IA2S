@@ -30,19 +30,29 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
     else:
         return {}
 
-# Fonction pour récupérer les actions de l'API
+# Fonction pour récupérer les actions de l'API avec gestion des erreurs
 def get_actions_from_api(coordinates, layout):
     api_url = "https://api.ia2s.app/webhook/streamlit/actions"
-    response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
-    data = response.json()
-    return data.get("actions")
+    try:
+        response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+        data = response.json()
+        return data.get("actions")
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred while fetching actions from the API: {e}")
+        return []
 
-# Fonction pour récupérer les données de l'image de l'API
+# Fonction pour récupérer les données de l'image de l'API avec gestion des erreurs
 def get_image_data_from_api(phone_id):
     api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
-    response = requests.post(api_url, json={"phone_id": phone_id})
-    data = response.json()
-    return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
+    try:
+        response = requests.post(api_url, json={"phone_id": phone_id})
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+        data = response.json()
+        return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
+    except requests.exceptions.RequestException as e:
+        st.error(f"An error occurred while fetching image data from the API: {e}")
+        return None, None, None, None
 
 # Titre "Phone Id"
 st.title("Phone Id")
@@ -53,6 +63,7 @@ st.session_state.phone_id = st.text_input("Phone Id", st.session_state.phone_id)
 # Si le phone id est rempli et l'image URL est vide, faire l'appel API pour obtenir les données de l'image
 if st.session_state.phone_id and not st.session_state.image_url:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
+
 
 if st.session_state.image_width and st.session_state.image_height:
     # Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
