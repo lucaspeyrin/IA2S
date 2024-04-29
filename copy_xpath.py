@@ -34,15 +34,18 @@ def calculate_percentage_coordinates(coordinates, image_width, image_height):
 
 # Fonction pour récupérer les actions de l'API avec gestion des erreurs
 def get_actions_from_api(coordinates, layout):
-    api_url = "https://api.ia2s.app/webhook/streamlit/actions"
-    try:
-        response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
-        response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-        data = response.json()
-        return data.get("actions")
-    except requests.exceptions.RequestException as e:
-        st.error(f"An error occurred while fetching actions from the API: {e}")
-        st.session_state.ignore = True
+    if st.session_state.ignore = False:
+        api_url = "https://api.ia2s.app/webhook/streamlit/actions"
+        try:
+            response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
+            response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+            data = response.json()
+            return data.get("actions")
+        except requests.exceptions.RequestException as e:
+            st.error(f"An error occurred while fetching actions from the API: {e}")
+            st.session_state.ignore = True
+            return []
+    else:
         return []
 
 # Fonction pour récupérer les données de l'image de l'API avec gestion des erreurs
