@@ -101,9 +101,12 @@ with col1:
 with col2:
     # Bouton refresh pour rafraîchir les données de l'image
     if st.button("Refresh"):
-        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
         st.session_state.actions = []
         st.session_state.ignore = False
+        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
+        st.session_state.ignore = True
+
+
 
     # Titre "Actions"
     st.title("Actions")
