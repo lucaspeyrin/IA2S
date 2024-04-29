@@ -93,8 +93,8 @@ with col2:
     # Si les coordonnées existent, appeler l'API pour obtenir les actions
     if st.session_state.coordinates:
         actions = get_actions_from_api(
-            {"x": st.session_state.image_width * st.session_state.percentage_coordinates["x"], 
-             "y": st.session_state.image_height * st.session_state.percentage_coordinates["y"]}, 
+            {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"])/100, 
+             "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"])/100}, 
             st.session_state.layout
         )
 
