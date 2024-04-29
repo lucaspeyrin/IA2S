@@ -19,6 +19,8 @@ if 'phone_id' not in st.session_state:
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
     st.session_state.percentage_coordinates = None
+
+if 'ignore' not in st.session_state:
     st.session_state.ignore = False
 
 # Fonction pour calculer les coordonnées en pourcentage
