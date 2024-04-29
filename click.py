@@ -10,7 +10,10 @@ if 'image_url' not in st.session_state:
 
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
+
+if 'ignore' not in st.session_state:
     st.session_state.ignore = False
+
 
 
 # Fonction pour récupérer les données d'image de l'API
