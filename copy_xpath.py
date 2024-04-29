@@ -76,8 +76,8 @@ if st.session_state.image_width and st.session_state.image_height:
     displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
     displayed_width = 300
 else:
-    displayed_height = None
-    displayed_width = None
+    displayed_height = 2340
+    displayed_width = 1080
 
 # Affichage en colonnes
 col1, col2 = st.columns(2)
