@@ -132,6 +132,4 @@ if st.session_state.image_url:
             for action in actions:
                 st.subheader(action["name"])
                 st.code(action["xpath"])
-else :
-    with col2:
         
