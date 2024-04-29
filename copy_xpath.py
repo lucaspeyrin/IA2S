@@ -89,14 +89,13 @@ col1, col2 = st.columns(2)
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
     if st.session_state.image_url:
-        image_data = requests.get(st.session_state.image_url)
         
         # Affichage de l'image avec les coordonnées
         coordinates = streamlit_image_coordinates(
-            Image.open(BytesIO(image_data.content)),
+            st.session_state.image_url,
             width=displayed_width,
             height=displayed_height,
-            key="pil",
+            key="url",
         )
         
         # Affichage des coordonnées
@@ -108,28 +107,31 @@ with col1:
         st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
 # Colonne 2 : Bouton refresh et affichage des actions
-with col2:
-    # Bouton refresh pour rafraîchir les données de l'image
-    if st.button("Refresh"):
-        st.session_state.ignore = False
-        st.session_state.image_url = None
-        st.rerun()
-        st.session_state.actions = []
+if st.session_state.image_url
+    with col2:
+        # Bouton refresh pour rafraîchir les données de l'image
+        if st.button("Refresh"):
+            st.session_state.ignore = False
+            st.session_state.image_url = None
+            st.rerun()
+            st.session_state.actions = []
+        
+        
+        # Titre "Actions"
+        st.title("Actions")
     
+        # Si les coordonnées existent, appeler l'API pour obtenir les actions
+        if st.session_state.coordinates and st.session_state.ignore is not True:
+            actions = get_actions_from_api(
+                {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"])/100, 
+                 "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"])/100}, 
+                st.session_state.layout
+            )
     
-    # Titre "Actions"
-    st.title("Actions")
-
-    # Si les coordonnées existent, appeler l'API pour obtenir les actions
-    if st.session_state.coordinates and st.session_state.ignore is not True:
-        actions = get_actions_from_api(
-            {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"])/100, 
-             "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"])/100}, 
-            st.session_state.layout
-        )
-
-        # Afficher chaque action
-        for action in actions:
-            st.subheader(action["name"])
-            st.code(action["xpath"])
+            # Afficher chaque action
+            for action in actions:
+                st.subheader(action["name"])
+                st.code(action["xpath"])
+else :
+    with col2:
 
