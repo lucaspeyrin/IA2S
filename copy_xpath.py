@@ -12,7 +12,7 @@ if 'actions' not in st.session_state:
     st.session_state.actions = []
 
 if 'phone_id' not in st.session_state:
-    st.session_state.phone_id = None
+    st.session_state.phone_id = "0afabf51-238e-4e1e-be1b-9388c97fe006"
 
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
