@@ -38,8 +38,8 @@ def get_actions_from_api(coordinates, layout):
         api_url = "https://api.ia2s.app/webhook/streamlit/actions"
         response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
         if response.status_code != 200:
-            st.error(f"Error: API returned status code {response.status_code}")
             st.session_state.ignore = True
+            st.error(f"Error: API returned status code {response.status_code}")
             return []
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
         data = response.json()
@@ -53,8 +53,8 @@ def get_image_data_from_api(phone_id):
         api_url = "https://api.ia2s.app/webhook/streamlit/screenshot"
         response = requests.post(api_url, json={"phone_id": phone_id})
         if response.status_code != 200:
-            st.error(f"Error: API returned status code {response.status_code}")
             st.session_state.ignore = True
+            st.error(f"Error: API returned status code {response.status_code}")
             return None, None, None, None
         response = requests.post(api_url, json={"phone_id": phone_id})
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
