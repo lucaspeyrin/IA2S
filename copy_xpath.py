@@ -69,7 +69,7 @@ st.title("Phone Id")
 # Input pour le phone id
 st.session_state.phone_id = st.text_input("Phone Id", st.session_state.phone_id)
 
-if st.session_state.ignore = True:
+if st.session_state.ignore == True:
     if st.button("Start"):
         st.session_state.ignore = False
 
