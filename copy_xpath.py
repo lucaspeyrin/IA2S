@@ -23,21 +23,21 @@ if 'coordinates' not in st.session_state:
 if 'ignore' not in st.session_state:
     st.session_state.ignore = True
 
-if 'last_click' not in st.session_state:
-    st.session_state.last_click = None
+if 'points' not in st.session_state:
+    st.session_state["points"] = []
 
 # Fonction pour calculer les coordonnées en pourcentage
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
     if coordinates:
-        x_percentage = (coordinates["x"] / displayed_width) * 100
-        y_percentage = (coordinates["y"] / displayed_height) * 100
+        x_percentage = (coordinates["x"] / image_width) * 100
+        y_percentage = (coordinates["y"] / image_height) * 100
         return {"x": x_percentage, "y": y_percentage}
     else:
         return {}
 
 # Fonction pour récupérer les actions de l'API avec gestion des erreurs
 def get_actions_from_api(coordinates, layout):
-    if st.session_state.ignore == False:
+    if not st.session_state.ignore:
         api_url = "https://api.ia2s.app/webhook/streamlit/actions"
         response = requests.post(api_url, json={"coordinates": coordinates, "layout": layout})
         if response.status_code != 200:
@@ -67,23 +67,15 @@ def get_phone_list():
     api_url = "https://api.ia2s.app/webhook/streamlit/phones"
     try:
         response = requests.get(api_url)
-        
-        # Vérification du code de statut de la réponse
         if response.status_code != 200:
             st.error(f"Erreur : l'API a retourné le code de statut {response.status_code}")
             return []
-        
-        # Tenter de décoder la réponse en JSON
         data = response.json()
-
-        # Vérifier que la réponse est une liste
         if isinstance(data, list):
-            # Extraire le nom des appareils (device_name) dans une liste
             return data
         else:
             st.error("Erreur : la réponse de l'API n'est pas au format attendu")
             return []
-        
     except requests.exceptions.RequestException as e:
         st.error(f"Erreur lors de la connexion à l'API : {e}")
         return []
@@ -121,34 +113,39 @@ col1, col2 = st.columns(2)
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
     if st.session_state.image_url:
-        
-        # Récupérer l'image et dessiner sur elle
+        # Télécharger et dessiner l'image à partir de l'URL
         img = Image.open(requests.get(st.session_state.image_url, stream=True).raw)
-        draw = ImageDraw.Draw(img)
 
-        # Si un clic a eu lieu, dessiner un petit cercle autour de la position
-        if st.session_state.last_click:
-            x, y = st.session_state.last_click
+        # Dessiner un petit cercle sur le dernier clic, si disponible
+        if st.session_state["points"]:
+            last_point = st.session_state["points"][-1]
+            draw = ImageDraw.Draw(img)
             radius = 10  # Rayon du cercle
-            coords = (x - radius, y - radius, x + radius, y + radius)
+            coords = (last_point[0] - radius, last_point[1] - radius, last_point[0] + radius, last_point[1] + radius)
             draw.ellipse(coords, fill="red")
-        
-        # Affichage de l'image modifiée avec le cercle de clic
-        value = streamlit_image_coordinates(img, key="pil")
 
-        if value is not None:
-            point = value["x"], value["y"]
-            if point != st.session_state.last_click:
-                st.session_state.last_click = point
+        # Affichage de l'image avec la possibilité de cliquer
+        coordinates = streamlit_image_coordinates(
+            img, width=displayed_width, height=displayed_height, key="url"
+        )
+
+        # Mise à jour des coordonnées dans le session state si l'utilisateur clique
+        if coordinates is not None:
+            point = coordinates["x"], coordinates["y"]
+            if point not in st.session_state["points"]:
+                st.session_state["points"].append(point)
                 st.rerun()
 
+        # Affichage de l'image modifiée (avec cercle si click)
+        st.image(img, use_column_width=True)
+
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
-if st.session_state.image_url:
-    with col2:
+with col2:
+    if st.session_state.image_url:
         # Affichage du Phone ID sélectionné
         st.subheader("Selected Phone ID")
         st.code(st.session_state.phone_id, language='text')  # Utilisation de st.code pour rendre le texte copiable
-        
+
         # Bouton 'Click' pour envoyer les coordonnées de clic à l'API
         if st.button("Click"):
             if st.session_state.percentage_coordinates:
@@ -177,15 +174,15 @@ if st.session_state.image_url:
         
         # Titre "Actions"
         st.title("Actions")
-    
+
         # Si les coordonnées existent, appeler l'API pour obtenir les actions
-        if st.session_state.coordinates and st.session_state.ignore is not True:
+        if st.session_state.coordinates and not st.session_state.ignore:
             actions = get_actions_from_api(
                 {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"]) / 100, 
                  "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"]) / 100}, 
                 st.session_state.layout
             )
-    
+
             # Afficher chaque action
             for action in actions:
                 st.subheader(action["name"])
