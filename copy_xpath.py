@@ -136,9 +136,6 @@ with col1:
                 st.session_state["points"].append(point)
                 st.rerun()
 
-        # Affichage de l'image modifiée (avec cercle si click)
-        st.image(img, use_column_width=True)
-
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
     if st.session_state.image_url:
