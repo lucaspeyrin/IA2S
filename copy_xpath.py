@@ -143,8 +143,8 @@ with col1:
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
                 
-        st.write(x_real)
-        st.write(y_real)
+        st.write(x_real*100/t.session_state.image_width)
+        st.write(y_real*100/t.session_state.image_height)
         
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
