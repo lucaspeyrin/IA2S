@@ -143,7 +143,8 @@ with col1:
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
                 
-        st.write(st.session_state.coordinates)
+        st.write(x_real)
+        st.write(y_real)
         
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
@@ -182,7 +183,7 @@ with col2:
         st.title("Actions")
 
         # Si les coordonnées existent, appeler l'API pour obtenir les actions
-        if st.session_state.percentage_coordinates and not st.session_state.ignore:
+        if st.session_state.points and not st.session_state.ignore:
             actions = get_actions_from_api(
                 st.session_state["points"][-1], st.session_state.layout
             )
