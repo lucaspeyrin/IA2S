@@ -142,7 +142,9 @@ with col1:
                 
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
-
+                
+        st.write(st.session_state.coordinates)
+        
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
     if st.session_state.image_url:
