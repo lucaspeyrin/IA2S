@@ -114,10 +114,6 @@ with col1:
             coords = (last_point[0] - radius, last_point[1] - radius, last_point[0] + radius, last_point[1] + radius)
             draw.ellipse(coords, fill="red")
 
-        # Affichage de l'image avec la possibilité de cliquer
-        coordinates = streamlit_image_coordinates(
-            img, width=displayed_width, height=displayed_height, key="url"
-        )
 
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
         if coordinates is not None:
@@ -130,9 +126,12 @@ with col1:
             point = x_real, y_real
             if point not in st.session_state["points"]:
                 st.session_state["points"]= [point]
-                
-                # Rafraîchir l'interface avec les nouvelles coordonnées
-                st.rerun()
+        
+        # Affichage de l'image avec la possibilité de cliquer
+        coordinates = streamlit_image_coordinates(
+            img, width=displayed_width, height=displayed_height, key="url"
+        )
+
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
