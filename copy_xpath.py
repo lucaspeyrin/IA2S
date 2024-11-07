@@ -95,7 +95,10 @@ st.write(phones)  # Afficher les données pour inspecter la structure
 
 # Appel de la fonction pour récupérer la liste des téléphones
 phones = get_phone_list()
-phone_options = [f"{phone['device_name']} ({phone['alternative_name']}) - {phone['id']}" for phone in phones]
+phone_options = [
+    f"{phone.get('device_name', 'Unknown')} ({phone.get('alternative_name', 'N/A')}) - {phone.get('id', 'Unknown ID')}"
+    for phone in phones
+]
 phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
 st.session_state.phone_id = phone_ids[selected_phone]
