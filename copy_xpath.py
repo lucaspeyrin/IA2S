@@ -27,10 +27,10 @@ if 'points' not in st.session_state:
     st.session_state["points"] = []
 
 # Fonction pour calculer les coordonnées en pourcentage
-def calculate_percentage_coordinates(coordinates, image_width, image_height):
+def calculate_percentage_coordinates(coordinates):
     if coordinates:
-        x_percentage = (coordinates["x"] / image_width) * 100
-        y_percentage = (coordinates["y"] / image_height) * 100
+        x_percentage = (coordinates["x"] / coordinates["width"]) * 100
+        y_percentage = (coordinates["y"] / coordinates["height"]) * 100
         return {"x": x_percentage, "y": y_percentage}
     else:
         return {}
