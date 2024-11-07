@@ -135,7 +135,7 @@ with col1:
         if st.session_state.coordinates:
             st.session_state.ignore = False
             st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
-            
+            st.write(st.session_state.percentage_coordinates)
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
         if coordinates is not None:
             st.session_state.coordinates = coordinates
