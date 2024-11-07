@@ -72,7 +72,7 @@ def get_phone_list():
         
         # Tenter de décoder la réponse en JSON
         data = response.json()
-
+        st.write(data)  # Pour vérifier la structure des données retournées
         # Vérifier que la réponse est une liste
         if isinstance(data, list):
             # Extraire le nom des appareils (device_name) dans une liste
