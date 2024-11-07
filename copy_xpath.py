@@ -143,8 +143,6 @@ with col1:
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
                 
-        st.write(x_real*100/st.session_state.image_width)
-        st.write(y_real*100/st.session_state.image_height)
         
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
@@ -159,8 +157,8 @@ with col2:
                 click_url = "https://api.ia2s.app/webhook/streamlit/click"
                 click_data = {
                     "phone_id": st.session_state.phone_id,
-                    "x": st.session_state.coordinates[0],
-                    "y": st.session_state.coordinates[1]
+                    "x": x_real*100/st.session_state.image_width,
+                    "y": y_real*100/st.session_state.image_height
                 }
                 click_response = requests.post(click_url, json=click_data)
                 if click_response.status_code != 200:
