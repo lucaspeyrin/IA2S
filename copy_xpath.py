@@ -156,8 +156,8 @@ with col2:
                 click_url = "https://api.ia2s.app/webhook/streamlit/click"
                 click_data = {
                     "phone_id": st.session_state.phone_id,
-                    "x": st.session_state.percentage_coordinates["x"],
-                    "y": st.session_state.percentage_coordinates["y"]
+                    "x": st.session_state.coordinates[0],
+                    "y": st.session_state.coordinates[1]
                 }
                 click_response = requests.post(click_url, json=click_data)
                 if click_response.status_code != 200:
