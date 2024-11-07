@@ -153,7 +153,7 @@ with col2:
 
         # Bouton 'Click' pour envoyer les coordonnées de clic à l'API
         if st.button("Click"):
-            if st.session_state.percentage_coordinates:
+            if st.session_state.points:
                 click_url = "https://api.ia2s.app/webhook/streamlit/click"
                 click_data = {
                     "phone_id": st.session_state.phone_id,
