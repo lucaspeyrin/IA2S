@@ -46,7 +46,7 @@ def get_actions_from_api(coordinates, layout):
             return []
         response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
         data = response.json()
-        return data.get("actions")
+        return data.get("actions", [])
     else:
         return []
 
@@ -190,7 +190,7 @@ with col2:
         # Si les coordonnées existent, appeler l'API pour obtenir les actions
         if st.session_state.percentage_coordinates and not st.session_state.ignore:
             actions = get_actions_from_api(
-                st.session_state.percentage_coordinates, st.session_state.layout
+                st.session_state.coordinates, st.session_state.layout
             )
 
             # Afficher chaque action
