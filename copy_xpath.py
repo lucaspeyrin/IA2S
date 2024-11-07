@@ -76,15 +76,16 @@ def get_phone_list():
 # Titre "Phone Id"
 st.title("Phone Id")
 
-# Appel de la fonction pour récupérer la liste des téléphones
-phones = get_phone_list()
-phone_options = [
-    f"{phone.get('device_name', 'Unknown')} ({phone.get('alternative_name', 'N/A')}) - {phone.get('id', 'Unknown ID')}"
-    for phone in phones
-]
-phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
-selected_phone = st.selectbox("Select Phone", options=phone_options)
-st.session_state.phone_id = phone_ids[selected_phone]
+if st.session_state.phone_id is None
+    # Appel de la fonction pour récupérer la liste des téléphones
+    phones = get_phone_list()
+    phone_options = [
+        f"{phone.get('device_name', 'Unknown')} ({phone.get('alternative_name', 'N/A')}) - {phone.get('id', 'Unknown ID')}"
+        for phone in phones
+    ]
+    phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
+    selected_phone = st.selectbox("Select Phone", options=phone_options)
+    st.session_state.phone_id = phone_ids[selected_phone]
 
 if st.session_state.ignore is not True and st.session_state.image_url is None and st.session_state.phone_id is not None:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
