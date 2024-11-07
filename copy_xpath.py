@@ -116,8 +116,7 @@ with col1:
 
 
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
-        if coordinates is not None:
-            st.session_state.coordinates = coordinates
+        if st.session_state.coordinates is not None:
             
             # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
             x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
@@ -132,6 +131,7 @@ with col1:
             img, width=displayed_width, height=displayed_height, key="url"
         )
 
+        st.session_state.coordinates = coordinates
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
