@@ -90,7 +90,7 @@ phone_options = [
 phone_ids = {phone_options[i]: st.session_state.phones[i]["id"] for i in range(len(st.session_state.phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
 
-if phone_ids[selected_phone] is not st.session_state.phone_id and is not None
+if selected_phone is not None and phone_ids[selected_phone] != st.session_state.phone_id:
     st.session_state.phone_id = phone_ids[selected_phone]
     st.session_state.image_url = None
 
