@@ -138,6 +138,10 @@ with col1:
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 if st.session_state.image_url:
     with col2:
+        # Affichage du Phone ID sélectionné
+        st.subheader("Selected Phone ID")
+        st.code(st.session_state.phone_id, language='text')  # Utilisation de st.code pour rendre le texte copiable
+        
         # Bouton 'Click' pour envoyer les coordonnées de clic à l'API
         if st.button("Click"):
             if st.session_state.percentage_coordinates:
