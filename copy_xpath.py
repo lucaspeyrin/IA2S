@@ -59,17 +59,6 @@ def get_image_data_from_api(phone_id):
     data = response.json()
     return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
 
-# Fonction pour dessiner un point rouge sur les coordonnées données
-def draw_red_dot(image_path, coordinates, displayed_width, displayed_height):
-    img = Image.open(requests.get(image_path, stream=True).raw)
-    draw = ImageDraw.Draw(img)
-    # Calculer les coordonnées en fonction de l'image affichée
-    x = int((coordinates["x"] / 100) * displayed_width)
-    y = int((coordinates["y"] / 100) * displayed_height)
-    # Dessiner un point rouge
-    draw.ellipse((x-5, y-5, x+5, y+5), fill="red")
-    return img
-
 # Titre "Phone Id"
 st.title("Phone Id")
 
@@ -80,6 +69,7 @@ if st.session_state.ignore is not True and st.session_state.image_url is None an
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
 
 if st.session_state.image_width and st.session_state.image_height:
+    # Calcul de la hauteur affichée en fonction de la largeur affichée de 300 pixels
     displayed_height = int((st.session_state.image_height / st.session_state.image_width) * 300)
     displayed_width = 300
 else:
@@ -92,55 +82,73 @@ col1, col2 = st.columns(2)
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
     if st.session_state.image_url:
+        
+        # Charger et afficher l'image principale avec le point rouge
+        image = Image.open(requests.get(st.session_state.image_url, stream=True).raw)
+        
+        if st.session_state.coordinates:
+            draw = ImageDraw.Draw(image)
+            draw.ellipse((
+                st.session_state.coordinates['x'] - 5,
+                st.session_state.coordinates['y'] - 5,
+                st.session_state.coordinates['x'] + 5,
+                st.session_state.coordinates['y'] + 5), 
+                fill='red'
+            )
+        
+        # Afficher l'image avec les coordonnées
+        st.image(image, width=displayed_width)
+        
+        # Enregistrer les coordonnées du clic
         coordinates = streamlit_image_coordinates(
             st.session_state.image_url,
             width=displayed_width,
-            height=displayed_height,
             key="url",
         )
+        
+        # Affichage des coordonnées
         st.write(coordinates)
         st.session_state.coordinates = coordinates
+        
+    if st.session_state.coordinates:
+        st.session_state.ignore = False
+        st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
 
-        if coordinates:
-            st.session_state.ignore = False
-            st.session_state.percentage_coordinates = calculate_percentage_coordinates(coordinates, st.session_state.image_width, st.session_state.image_height)
-            
-            # Dessiner un point rouge sur l'image à la position du curseur
-            img_with_dot = draw_red_dot(st.session_state.image_url, st.session_state.percentage_coordinates, displayed_width, displayed_height)
-            st.image(img_with_dot, caption="Image avec point rouge", width=displayed_width)
-
-# Colonne 2 : Bouton refresh, click, et affichage des actions
+# Colonne 2 : Bouton 'Click' au-dessus des actions
 if st.session_state.image_url:
     with col2:
+        # Bouton 'Click' pour envoyer les coordonnées au pointage
+        if st.button("Click"):
+            if st.session_state.percentage_coordinates:
+                api_url = "https://api.ia2s.app/webhook/streamlit/click"
+                response = requests.post(api_url, json=st.session_state.percentage_coordinates)
+                if response.status_code == 200:
+                    st.success("Clic envoyé avec succès")
+                else:
+                    st.error("Erreur lors de l'envoi du clic")
+        
+        # Bouton refresh pour rafraîchir les données de l'image
         if st.button("Refresh"):
             st.session_state.ignore = False
             st.session_state.image_url = None
-            st.rerun()
             st.session_state.actions = []
+            st.rerun()
         
+        # Titre "Actions"
         st.title("Actions")
+    
+        # Si les coordonnées existent, appeler l'API pour obtenir les actions
         if st.session_state.coordinates and st.session_state.ignore is not True:
             actions = get_actions_from_api(
                 {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"])/100, 
                  "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"])/100}, 
                 st.session_state.layout
             )
+    
+            # Afficher chaque action
             for action in actions:
                 st.subheader(action["name"])
                 st.code(action["xpath"])
-
-        # Bouton "Click" pour envoyer les coordonnées à l'API
-        if st.button("Click"):
-            click_url = "https://api.ia2s.app/webhook/streamlit/click"
-            payload = {
-                "x": st.session_state.percentage_coordinates["x"],
-                "y": st.session_state.percentage_coordinates["y"]
-            }
-            response = requests.post(click_url, json=payload)
-            if response.status_code == 200:
-                st.success("Click position sent successfully.")
-            else:
-                st.error(f"Failed to send click position. Status code: {response.status_code}")
 
 if st.session_state.image_url is None:
     if st.button("Start"):
