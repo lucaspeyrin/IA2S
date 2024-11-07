@@ -59,21 +59,34 @@ def get_image_data_from_api(phone_id):
     data = response.json()
     return data.get("url"), data.get("width"), data.get("height"), data.get("layout")
 
-# Fonction pour récupérer la liste des téléphones
+# Fonction pour récupérer la liste des téléphones de l'API
 def get_phone_list():
     api_url = "https://api.ia2s.app/webhook/streamlit/phones"
-    response = requests.get(api_url)
-    if response.status_code == 200:
-        return response.json().get("phones", [])
-    else:
-        st.error(f"Error: API returned status code {response.status_code}")
+    try:
+        response = requests.get(api_url)
+        # Vérification du code de statut de la réponse
+        if response.status_code != 200:
+            st.error(f"Erreur : l'API a retourné le code de statut {response.status_code}")
+            return []
+        # Tenter de décoder la réponse en JSON
+        data = response.json()
+        return data.get("phones", [])
+    except requests.exceptions.RequestException as e:
+        st.error(f"Erreur lors de la connexion à l'API : {e}")
+        return []
+    except ValueError as e:
+        st.error("Erreur lors de l'analyse de la réponse JSON de l'API")
         return []
 
 # Titre "Phone Id"
 st.title("Phone Id")
 
-# Récupérer et afficher la liste des téléphones
+# Appel de la fonction et vérification
 phones = get_phone_list()
+if phones:
+    st.write("Téléphones disponibles :", phones)
+else:
+    st.warning("Aucun téléphone trouvé ou erreur lors de la récupération des données.")
 phone_options = [f"{phone['device_name']} ({phone['alternative_name']}) - {phone['id']}" for phone in phones]
 phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
