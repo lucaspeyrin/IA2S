@@ -69,15 +69,15 @@ def get_phone_list():
         st.error(f"Error: API returned status code {response.status_code}")
         return []
 
+# Titre "Phone Id"
+st.title("Phone Id")
+
 # Récupérer et afficher la liste des téléphones
 phones = get_phone_list()
 phone_options = [f"{phone['device_name']} ({phone['alternative_name']}) - {phone['id']}" for phone in phones]
 phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
 st.session_state.phone_id = phone_ids[selected_phone]
-
-# Titre "Phone Id"
-st.title("Phone Id")
 
 if st.session_state.ignore is not True and st.session_state.image_url is None and st.session_state.phone_id is not None:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
