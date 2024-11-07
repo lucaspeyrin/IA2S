@@ -105,8 +105,6 @@ with col1:
     if st.session_state.image_url:
         # Télécharger et dessiner l'image à partir de l'URL
         img = Image.open(requests.get(st.session_state.image_url, stream=True).raw)
-
-        st.write(st.session_state.coordinates)
         
         # Dessiner un petit cercle sur le dernier clic, si disponible
         if st.session_state["points"]:
