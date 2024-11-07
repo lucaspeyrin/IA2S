@@ -152,6 +152,10 @@ if st.session_state.image_url:
                     st.error(f"Error: Click API returned status code {click_response.status_code}")
                 else:
                     st.success("Click sent successfully")
+                    st.session_state.ignore = False
+                    st.session_state.image_url = None
+                    st.rerun()
+                    st.session_state.actions = []
 
         # Bouton refresh pour rafraîchir les données de l'image
         if st.button("Refresh"):
