@@ -191,4 +191,6 @@ with col2:
 
 if st.session_state.image_url is None:
     if st.button("Start"):
-       
+        st.session_state.ignore = False
+        st.session_state.image_url = None
+        st.rerun()
