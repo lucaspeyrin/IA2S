@@ -170,6 +170,7 @@ with col2:
                     st.rerun()
                     st.session_state.actions = []
                     st.session_state.points = []
+                    st.session_state.coordinates = None
 
         # Bouton refresh pour rafraîchir les données de l'image
         if st.button("Refresh"):
@@ -178,6 +179,7 @@ with col2:
             st.rerun()
             st.session_state.actions = []
             st.session_state.points = []
+            st.session_state.coordinates = None
         
         # Titre "Actions"
         st.title("Actions")
