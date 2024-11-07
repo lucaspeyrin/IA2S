@@ -106,6 +106,8 @@ with col1:
         # Télécharger et dessiner l'image à partir de l'URL
         img = Image.open(requests.get(st.session_state.image_url, stream=True).raw)
 
+        st.write(st.session_state.coordinates)
+        
         # Dessiner un petit cercle sur le dernier clic, si disponible
         if st.session_state["points"]:
             last_point = st.session_state["points"][-1]
@@ -113,25 +115,26 @@ with col1:
             radius = 10  # Rayon du cercle
             coords = (last_point[0] - radius, last_point[1] - radius, last_point[0] + radius, last_point[1] + radius)
             draw.ellipse(coords, fill="red")
-
-
-        # Mise à jour des coordonnées dans le session state si l'utilisateur clique
-        if st.session_state.coordinates is not None:
-            
-            # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
-            x_real = (st.session_state.coordinates["x"] / displayed_width) * st.session_state.image_width
-            y_real = (st.session_state.coordinates["y"] / displayed_height) * st.session_state.image_height
-            
-            point = x_real, y_real
-            if point not in st.session_state["points"]:
-                st.session_state["points"]= [point]
         
         # Affichage de l'image avec la possibilité de cliquer
         coordinates = streamlit_image_coordinates(
             img, width=displayed_width, height=displayed_height, key="url"
         )
 
-        st.session_state.coordinates = coordinates
+        # Mise à jour des coordonnées dans le session state si l'utilisateur clique
+        if coordinates is not None:
+            st.session_state.coordinates = coordinates
+            
+            # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
+            x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
+            y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
+            
+            point = x_real, y_real
+            if point not in st.session_state["points"]:
+                st.session_state["points"].append(point)
+                
+                # Rafraîchir l'interface avec les nouvelles coordonnées
+                st.rerun()
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
