@@ -136,10 +136,6 @@ with col1:
             # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
             x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
             y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
-
-            st.session_state.percentage_coordinates = { "x" : (x_real/st.session_state.image_width)*100, "y" : (y_real/st.session_state.image_height)*100 }
-
-            st.write(st.session_state)
             
             point = x_real, y_real
             if point not in st.session_state["points"]:
@@ -187,7 +183,7 @@ with col2:
         # Si les coordonnées existent, appeler l'API pour obtenir les actions
         if st.session_state.percentage_coordinates and not st.session_state.ignore:
             actions = get_actions_from_api(
-                st.session_state.coordinates, st.session_state.layout
+                st.session_state["points"][-1], st.session_state.layout
             )
 
             # Afficher chaque action
