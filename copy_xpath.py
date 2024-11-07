@@ -94,23 +94,7 @@ st.title("Phone Id")
 
 # Appel de la fonction pour récupérer la liste des téléphones
 phones = get_phone_list()
-
-# Génération des options de téléphone avec vérification de la présence des clés
-if phones:
-    phone_options = []
-    for phone in phones:
-        # Utiliser la méthode .get() pour éviter les erreurs si la clé n'existe pas
-        device_name = phone.get("device_name", "Nom non disponible")
-        alternative_name = phone.get("alternative_name", "Nom alternatif non disponible")
-        phone_id = phone.get("id", "ID non disponible")
-
-        # Créer l'option formatée
-        phone_options.append(f"{device_name} ({alternative_name}) - {phone_id}")
-
-    st.write("Téléphones disponibles :")
-    st.write(phone_options)
-else:
-    st.warning("Aucun appareil trouvé ou erreur lors de la récupération des données.")
+phone_options = [f"{phone['device_name']} ({phone['alternative_name']}) - {phone['id']}" for phone in phones]
 phone_ids = {phone_options[i]: phones[i]["id"] for i in range(len(phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
 st.session_state.phone_id = phone_ids[selected_phone]
