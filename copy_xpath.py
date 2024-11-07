@@ -131,7 +131,11 @@ with col1:
 
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
         if coordinates is not None:
-            point = coordinates["x"], coordinates["y"]
+            # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
+            x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
+            y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
+            
+            point = x_real, y_real
             if point not in st.session_state["points"]:
                 st.session_state["points"].append(point)
                 st.rerun()
@@ -187,6 +191,4 @@ with col2:
 
 if st.session_state.image_url is None:
     if st.button("Start"):
-        st.session_state.ignore = False
-        st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
-        st.rerun()
+       
