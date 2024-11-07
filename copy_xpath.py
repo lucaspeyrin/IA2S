@@ -73,9 +73,11 @@ def get_phone_list():
         # Tenter de décoder la réponse en JSON
         data = response.json()
 
-        # Vérifier que data est bien un dictionnaire
-        if isinstance(data, dict):
-            return data.get("phones", [])
+        # Vérifier que la réponse est une liste
+        if isinstance(data, list):
+            # Extraire le nom des appareils (device_name) dans une liste
+            phone_names = [phone.get("device_name") for phone in data]
+            return phone_names
         else:
             st.error("Erreur : la réponse de l'API n'est pas au format attendu")
             return []
