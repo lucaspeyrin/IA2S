@@ -128,11 +128,7 @@ with col1:
         coordinates = streamlit_image_coordinates(
             img, width=displayed_width, height=displayed_height, key="url"
         )
-
-        if st.session_state.coordinates:
-                st.session_state.ignore = False
-                st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
-                
+       
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
         if coordinates is not None:
             # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
@@ -145,6 +141,11 @@ with col1:
                 
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
+
+        if st.session_state.coordinates:
+                st.session_state.ignore = False
+                st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+         
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 with col2:
