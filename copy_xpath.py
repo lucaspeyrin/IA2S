@@ -23,6 +23,9 @@ if 'coordinates' not in st.session_state:
 if 'ignore' not in st.session_state:
     st.session_state.ignore = True
 
+if 'last_click' not in st.session_state:
+    st.session_state.last_click = None
+
 # Fonction pour calculer les coordonnées en pourcentage
 def calculate_percentage_coordinates(coordinates, image_width, image_height):
     if coordinates:
@@ -88,15 +91,6 @@ def get_phone_list():
         st.error("Erreur lors de l'analyse de la réponse JSON de l'API")
         return []
 
-# Fonction pour dessiner un cercle ou une ellipse à une position donnée
-def draw_click_on_image(image, point, radius=10):
-    draw = ImageDraw.Draw(image)
-    # Calcul des coordonnées du cercle, centré sur les coordonnées du point
-    x, y = point
-    # Dessiner un petit cercle rouge (10px de rayon)
-    draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill="red")
-    return image
-
 # Titre "Phone Id"
 st.title("Phone Id")
 
@@ -127,30 +121,26 @@ col1, col2 = st.columns(2)
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
     if st.session_state.image_url:
-        # Charger l'image à partir de l'URL
-        img = Image.open(st.session_state.image_url)
         
-        # Dessiner un cercle à la position actuelle du clic
-        if st.session_state.coordinates:
-            x = st.session_state.coordinates["x"]
-            y = st.session_state.coordinates["y"]
-            img = draw_click_on_image(img, (x, y))
-        
-        # Affichage de l'image avec les coordonnées modifiées
-        coordinates = streamlit_image_coordinates(
-            img,
-            width=displayed_width,
-            height=displayed_height,
-            key="url",
-        )
-        
-        # Affichage des coordonnées
-        st.write(coordinates)
-        st.session_state.coordinates = coordinates
+        # Récupérer l'image et dessiner sur elle
+        img = Image.open(requests.get(st.session_state.image_url, stream=True).raw)
+        draw = ImageDraw.Draw(img)
 
-    if st.session_state.coordinates:
-        st.session_state.ignore = False
-        st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
+        # Si un clic a eu lieu, dessiner un petit cercle autour de la position
+        if st.session_state.last_click:
+            x, y = st.session_state.last_click
+            radius = 10  # Rayon du cercle
+            coords = (x - radius, y - radius, x + radius, y + radius)
+            draw.ellipse(coords, fill="red")
+        
+        # Affichage de l'image modifiée avec le cercle de clic
+        value = streamlit_image_coordinates(img, key="pil")
+
+        if value is not None:
+            point = value["x"], value["y"]
+            if point != st.session_state.last_click:
+                st.session_state.last_click = point
+                st.rerun()
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
 if st.session_state.image_url:
