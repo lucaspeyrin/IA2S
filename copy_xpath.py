@@ -91,10 +91,11 @@ def get_phone_list():
 
 # Titre "Phone Id"
 st.title("Phone Id")
-st.write(phones)  # Afficher les données pour inspecter la structure
 
 # Appel de la fonction pour récupérer la liste des téléphones
 phones = get_phone_list()
+st.write(phones)  # Afficher les données pour inspecter la structure
+
 phone_options = [
     f"{phone.get('device_name', 'Unknown')} ({phone.get('alternative_name', 'N/A')}) - {phone.get('id', 'Unknown ID')}"
     for phone in phones
