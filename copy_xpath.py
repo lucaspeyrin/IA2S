@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw
 from streamlit_image_coordinates import streamlit_image_coordinates
 
 # Initialisation des variables de session
@@ -88,6 +88,15 @@ def get_phone_list():
         st.error("Erreur lors de l'analyse de la réponse JSON de l'API")
         return []
 
+# Fonction pour dessiner un cercle ou une ellipse à une position donnée
+def draw_click_on_image(image, point, radius=10):
+    draw = ImageDraw.Draw(image)
+    # Calcul des coordonnées du cercle, centré sur les coordonnées du point
+    x, y = point
+    # Dessiner un petit cercle rouge (10px de rayon)
+    draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill="red")
+    return image
+
 # Titre "Phone Id"
 st.title("Phone Id")
 
@@ -118,10 +127,18 @@ col1, col2 = st.columns(2)
 # Colonne 1 : Affichage de l'image avec les coordonnées
 with col1:
     if st.session_state.image_url:
+        # Charger l'image à partir de l'URL
+        img = Image.open(st.session_state.image_url)
         
-        # Affichage de l'image avec les coordonnées
+        # Dessiner un cercle à la position actuelle du clic
+        if st.session_state.coordinates:
+            x = st.session_state.coordinates["x"]
+            y = st.session_state.coordinates["y"]
+            img = draw_click_on_image(img, (x, y))
+        
+        # Affichage de l'image avec les coordonnées modifiées
         coordinates = streamlit_image_coordinates(
-            st.session_state.image_url,
+            img,
             width=displayed_width,
             height=displayed_height,
             key="url",
@@ -130,7 +147,7 @@ with col1:
         # Affichage des coordonnées
         st.write(coordinates)
         st.session_state.coordinates = coordinates
-        
+
     if st.session_state.coordinates:
         st.session_state.ignore = False
         st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates, st.session_state.image_width, st.session_state.image_height)
