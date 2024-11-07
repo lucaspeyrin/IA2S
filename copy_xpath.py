@@ -87,7 +87,7 @@ phone_options = [
     f"{phone.get('device_name', 'Unknown')} ({phone.get('alternative_name', 'N/A')}) - {phone.get('id', 'Unknown ID')}"
     for phone in st.session_state.phones
 ]
-phone_ids = {phone_options[i]: st.session_state.phones[i]["id"] for i in range(len(phones))}
+phone_ids = {phone_options[i]: st.session_state.phones[i]["id"] for i in range(len(st.session_state.phones))}
 selected_phone = st.selectbox("Select Phone", options=phone_options)
 st.session_state.phone_id = phone_ids[selected_phone]
 
