@@ -128,14 +128,7 @@ with col1:
         coordinates = streamlit_image_coordinates(
             img, width=displayed_width, height=displayed_height, key="url"
         )
-       # Affichage des coordonnées
-        st.write(coordinates)
-        st.session_state.coordinates = coordinates
-        st.write(st.session_state.coordinates)
-        if st.session_state.coordinates:
-            st.session_state.ignore = False
-            st.session_state.percentage_coordinates = calculate_percentage_coordinates(st.session_state.coordinates)
-            st.write(st.session_state.percentage_coordinates)
+
         # Mise à jour des coordonnées dans le session state si l'utilisateur clique
         if coordinates is not None:
             st.session_state.coordinates = coordinates
@@ -143,6 +136,10 @@ with col1:
             # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
             x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
             y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
+
+            st.session_state.percentage_coordinates = { "x" : x_real, "y" : y_real }
+
+            st.write(st.session_state.percentage_coordinates)
             
             point = x_real, y_real
             if point not in st.session_state["points"]:
