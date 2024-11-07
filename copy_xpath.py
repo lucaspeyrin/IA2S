@@ -64,13 +64,22 @@ def get_phone_list():
     api_url = "https://api.ia2s.app/webhook/streamlit/phones"
     try:
         response = requests.get(api_url)
+        
         # Vérification du code de statut de la réponse
         if response.status_code != 200:
             st.error(f"Erreur : l'API a retourné le code de statut {response.status_code}")
             return []
+        
         # Tenter de décoder la réponse en JSON
         data = response.json()
-        return data.get("phones", [])
+
+        # Vérifier que data est bien un dictionnaire
+        if isinstance(data, dict):
+            return data.get("phones", [])
+        else:
+            st.error("Erreur : la réponse de l'API n'est pas au format attendu")
+            return []
+        
     except requests.exceptions.RequestException as e:
         st.error(f"Erreur lors de la connexion à l'API : {e}")
         return []
