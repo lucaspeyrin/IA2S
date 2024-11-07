@@ -119,8 +119,8 @@ with col1:
         if st.session_state.coordinates is not None:
             
             # Calculer les coordonnées correctes par rapport à la taille réelle de l'image
-            x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
-            y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
+            x_real = (st.session_state.coordinates["x"] / displayed_width) * st.session_state.image_width
+            y_real = (st.session_state.coordinates["y"] / displayed_height) * st.session_state.image_height
             
             point = x_real, y_real
             if point not in st.session_state["points"]:
