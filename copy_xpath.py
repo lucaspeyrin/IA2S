@@ -139,7 +139,7 @@ with col1:
 
             st.session_state.percentage_coordinates = { "x" : (x_real/st.session_state.image_width)*100, "y" : (y_real/st.session_state.image_height)*100 }
 
-            st.write(st.session_state.percentage_coordinates)
+            st.write(st.session_state)
             
             point = x_real, y_real
             if point not in st.session_state["points"]:
