@@ -93,6 +93,7 @@ selected_phone = st.selectbox("Select Phone", options=phone_options)
 if selected_phone is not None and phone_ids[selected_phone] != st.session_state.phone_id:
     st.session_state.phone_id = phone_ids[selected_phone]
     st.session_state.image_url = None
+    st.session_state["points"] = []
 
 if st.session_state.ignore is not True and st.session_state.image_url is None and st.session_state.phone_id is not None:
     st.session_state.image_url, st.session_state.image_width, st.session_state.image_height, st.session_state.layout = get_image_data_from_api(st.session_state.phone_id)
