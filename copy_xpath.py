@@ -91,6 +91,7 @@ def get_phone_list():
 
 # Titre "Phone Id"
 st.title("Phone Id")
+st.write(phones)  # Afficher les données pour inspecter la structure
 
 # Appel de la fonction pour récupérer la liste des téléphones
 phones = get_phone_list()
