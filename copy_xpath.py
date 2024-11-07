@@ -137,7 +137,7 @@ with col1:
             x_real = (coordinates["x"] / displayed_width) * st.session_state.image_width
             y_real = (coordinates["y"] / displayed_height) * st.session_state.image_height
 
-            st.session_state.percentage_coordinates = { "x" : coordinates["x"], "y" : coordinates["y"] }
+            st.session_state.percentage_coordinates = { "x" : (x_real/st.session_state.image_width)*100, "y" : (y_real/st.session_state.image_height)*100 }
 
             st.write(st.session_state.percentage_coordinates)
             
