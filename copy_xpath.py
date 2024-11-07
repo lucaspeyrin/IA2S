@@ -76,7 +76,7 @@ def get_phone_list():
 # Titre "Phone Id"
 st.title("Phone Id")
 
-if st.session_state.phone_id is None
+if st.session_state.phone_id is None:
     # Appel de la fonction pour récupérer la liste des téléphones
     phones = get_phone_list()
     phone_options = [
