@@ -18,22 +18,12 @@ if 'phone_id' not in st.session_state:
 
 if 'coordinates' not in st.session_state:
     st.session_state.coordinates = None
-    st.session_state.percentage_coordinates = None
 
 if 'ignore' not in st.session_state:
     st.session_state.ignore = True
 
 if 'points' not in st.session_state:
     st.session_state["points"] = []
-
-# Fonction pour calculer les coordonnées en pourcentage
-def calculate_percentage_coordinates(coordinates):
-    if coordinates:
-        x_percentage = (coordinates["x"] / coordinates["width"]) * 100
-        y_percentage = (coordinates["y"] / coordinates["height"]) * 100
-        return {"x": x_percentage, "y": y_percentage}
-    else:
-        return {}
 
 # Fonction pour récupérer les actions de l'API avec gestion des erreurs
 def get_actions_from_api(coordinates, layout):
@@ -139,7 +129,7 @@ with col1:
             
             point = x_real, y_real
             if point not in st.session_state["points"]:
-                st.session_state["points"].append(point)
+                st.session_state["points"]= [point]
                 
                 # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
