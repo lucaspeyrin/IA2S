@@ -138,6 +138,11 @@ with col1:
             point = x_real, y_real
             if point not in st.session_state["points"]:
                 st.session_state["points"].append(point)
+                
+                # Calcul des coordonnées en pourcentage
+                st.session_state.percentage_coordinates = calculate_percentage_coordinates(coordinates, st.session_state.image_width, st.session_state.image_height)
+                
+                # Rafraîchir l'interface avec les nouvelles coordonnées
                 st.rerun()
 
 # Colonne 2 : Boutons 'Click' et 'Refresh', affichage des actions
@@ -177,11 +182,9 @@ with col2:
         st.title("Actions")
 
         # Si les coordonnées existent, appeler l'API pour obtenir les actions
-        if st.session_state.coordinates and not st.session_state.ignore:
+        if st.session_state.percentage_coordinates and not st.session_state.ignore:
             actions = get_actions_from_api(
-                {"x": (st.session_state.image_width * st.session_state.percentage_coordinates["x"]) / 100, 
-                 "y": (st.session_state.image_height * st.session_state.percentage_coordinates["y"]) / 100}, 
-                st.session_state.layout
+                st.session_state.percentage_coordinates, st.session_state.layout
             )
 
             # Afficher chaque action
@@ -194,3 +197,4 @@ if st.session_state.image_url is None:
         st.session_state.ignore = False
         st.session_state.image_url = None
         st.rerun()
+
